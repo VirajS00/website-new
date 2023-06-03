@@ -1,0 +1,33 @@
+---
+import classNames from "classnames";
+
+interface Props {
+	verticalCenter?: boolean;
+}
+
+const { verticalCenter } = Astro.props;
+---
+
+<section
+	class={classNames({
+		"vert-center": verticalCenter,
+	})}
+>
+	<slot />
+</section>
+
+<style lang='scss'>
+	section {
+		position: relative;
+		height: calc(100vh - 100px);
+		width: 100%;
+		margin-top: 100px;
+
+		@media screen and (min-width: 950px) {
+			&.vert-center {
+				display: grid;
+				align-items: center;
+			}
+		}
+	}
+</style>

@@ -1,0 +1,150 @@
+---
+import FilmmakingCard from "../assets/fimmaking-card.jpg";
+---
+
+<div class='menu'>
+	<input type='checkbox' id='menu' class='menu-check' role='button' />
+	<label class='icon' for='menu'>
+		<span>Toggle Menu</span>
+		<div class='bar bar-1'></div>
+		<div class='bar bar-2'></div>
+		<div class='bar bar-3'></div>
+	</label>
+	<nav class='menu-contents'>
+		<ul>
+			<li><a href='#'>Menu Item 1</a></li>
+			<li><a href='#'>Menu Item 2</a></li>
+			<li><a href='#'>Menu Item 3</a></li>
+		</ul>
+	</nav>
+</div>
+
+<script lang='ts'>
+	const checkbox = document.querySelector(".menu-check");
+
+	document.addEventListener("keyup", (e) => {
+		if (e.key === "Escape" && checkbox.checked) {
+			checkbox.checked = false;
+			checkbox.blur();
+		}
+	});
+</script>
+
+<style lang='scss'>
+	.menu-contents {
+		position: fixed;
+		z-index: 1000;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		background-color: rgb(0 0 0 / 0.5);
+		-webkit-backdrop-filter: blur(5px);
+		backdrop-filter: blur(5px);
+		opacity: 0;
+		pointer-events: none;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		transition: opacity 250ms ease;
+
+		ul {
+			list-style: none;
+			display: flex;
+			flex-direction: column;
+			gap: 1em;
+
+			li {
+				font-size: 2rem;
+
+				a {
+					color: #fff;
+					text-decoration: none;
+					transition: color 250ms ease;
+
+					&:hover {
+						color: #5790fa;
+					}
+				}
+			}
+		}
+	}
+
+	.menu {
+		position: fixed;
+		top: 50px;
+		right: 50px;
+		height: 30px;
+		width: 40px;
+		z-index: 1000;
+
+		.menu-check {
+			transform: scale(0);
+			position: relative;
+			z-index: 1003;
+
+			&:checked ~ .menu-contents {
+				opacity: 1;
+				pointer-events: fill;
+			}
+
+			&:focus-visible ~ .icon {
+				.bar {
+					box-shadow: 0 0 7px 3px rgb(255 255 255 / 0.5);
+				}
+			}
+
+			&:checked ~ .icon {
+				.bar-1 {
+					transform: translateY(450%) rotate(45deg);
+				}
+
+				.bar-3 {
+					transform: translateY(-450%) rotate(-45deg);
+				}
+
+				.bar-2 {
+					transform: scaleX(0) translateY(-50%);
+				}
+			}
+		}
+
+		.icon {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			z-index: 2000;
+			cursor: pointer;
+
+			span {
+				opacity: 0;
+			}
+
+			.bar {
+				position: absolute;
+				width: 100%;
+				height: 3px;
+				background-color: #fff;
+				transition: transform 250ms ease, box-shadow 250ms ease;
+				box-shadow: 0 0 0 0;
+			}
+
+			&:hover .bar {
+				box-shadow: 0 0 7px 2px rgb(255 255 255 / 0.5);
+			}
+
+			.bar-1 {
+				top: 0;
+			}
+
+			.bar-2 {
+				top: 50%;
+				transform: scaleX(1) translateY(-50%);
+			}
+
+			.bar-3 {
+				bottom: 0;
+			}
+		}
+	}
+</style>

@@ -1,0 +1,138 @@
+---
+interface Props {
+	className?: string;
+	gradientColor1?: string;
+	gradientColor2?: string;
+	height: number;
+	link: string;
+}
+
+const {
+	className,
+	gradientColor1 = "#fc23c9",
+	gradientColor2 = "#8593ff",
+	height = 400,
+	link,
+} = Astro.props;
+---
+
+<div
+	class={`card ${className}`}
+	style={`--gradient-color-1: ${gradientColor1}; --gradient-color-2: ${gradientColor2}; --height: ${height}px;`}
+>
+	<div class='card-border' aria-hidden='true'></div>
+	<div class='card-border-gradient' aria-hidden='true'></div>
+	<div class='card-bg' aria-hidden='true'></div>
+	<div class='card-content'>
+		<a href={link}>
+			<slot />
+		</a>
+	</div>
+</div>
+
+<style lang='scss'>
+	.card {
+		--border-color: #323232;
+		--border-width: 2px;
+		--border-transition-duration: 250ms;
+		--border-animation-duration: 7s;
+		--blob-size: 300px;
+
+		color: #fff;
+		height: var(--height);
+		width: 100%;
+		position: relative;
+		overflow: hidden;
+
+		.card-bg {
+			position: absolute;
+			inset: var(--border-width);
+			background-color: #000;
+			background-size: var(--blob-size) var(--blob-size);
+			background-repeat: no-repeat;
+			background-position: center center;
+		}
+
+		&:hover .card-bg,
+		&:focus-within .card-bg {
+			animation: bgsize var(--blob-pulse-duration) alternate infinite;
+		}
+
+		.card-content {
+			position: absolute;
+			inset: var(--border-width);
+			background-color: rgb(255 255 255 / 0.1);
+			-webkit-backdrop-filter: blur(50px);
+			backdrop-filter: blur(50px);
+
+			a {
+				text-decoration: none;
+				display: block;
+				position: absolute;
+				inset: 0;
+				padding: 0.5rem 1.5rem;
+				color: #fff;
+				outline: none;
+
+				h1 {
+					color: #666;
+				}
+
+				p {
+					line-height: 1.3;
+				}
+			}
+		}
+
+		.card-border {
+			position: absolute;
+			inset: 0;
+			height: 100%;
+			width: 100%;
+			background-color: var(--border-color);
+			background-size: 100px;
+			z-index: -1;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		.card-border-gradient {
+			position: absolute;
+			height: 500%;
+			width: 500%;
+			background-size: 150%;
+			inset: 0;
+			background-image: conic-gradient(
+				var(--gradient-color-1),
+				var(--gradient-color-2),
+				var(--gradient-color-1),
+				var(--border-color),
+				var(--gradient-color-2)
+			);
+			top: 50%;
+			left: 50%;
+			transform: translateY(-50%) rotate(0deg);
+			opacity: 0;
+			transition: opacity var(--border-transition-duration) ease;
+		}
+
+		&:hover,
+		&:focus-within {
+			.card-border-gradient {
+				opacity: 1;
+				animation: rotate var(--border-animation-duration) linear infinite;
+			}
+		}
+	}
+
+	@keyframes rotate {
+		from {
+			transform: translate(-50%, -50%) rotate(0);
+		}
+
+		to {
+			transform: translate(-50%, -50%) rotate(360deg);
+		}
+	}
+</style>

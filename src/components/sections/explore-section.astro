@@ -1,0 +1,73 @@
+---
+import PictureCard from "../picture-card.astro";
+import Section from "../section.astro";
+import filmmakingCard from "../../assets/fimmaking-card.jpg";
+import photographyCard from "../../assets/photography-card.jpeg";
+import codingCard from "../../assets/coding-card.jpg";
+---
+
+<Section verticalCenter>
+	<div>
+		<h1 class='section-title'>Explore</h1>
+		<div class='cards-container'>
+			<PictureCard
+				link='#'
+				imageUrl={filmmakingCard}
+				imageAlt='Filmmaking'
+				gradientColor1='#ffff00'
+				gradientColor2='red'
+			>
+				<h3 class='card-title'>FILMMAKING</h3>
+				<p class='card-p'>
+					I studied filmmaking in college, here is a list of curated films.
+				</p>
+			</PictureCard>
+			<PictureCard
+				link='#'
+				imageUrl={photographyCard}
+				imageAlt='Filmmaking'
+				gradientColor1='red'
+				gradientColor2='lime'
+			>
+				<h3 class='card-title'>PHOTOGRAPHY</h3>
+				<p class='card-p'>
+					My passion since I was 7 years old. Here is a showcase of curated
+					photos
+				</p>
+			</PictureCard>
+			<PictureCard link='#' imageUrl={codingCard} imageAlt='Filmmaking'>
+				<h3 class='card-title'>CODING/DESIGN</h3>
+				<p class='card-p'>
+					Working as a front-end developer right now and like to have fun with
+					code.
+				</p>
+			</PictureCard>
+		</div>
+	</div>
+</Section>
+
+<style lang='scss'>
+	.cards-container {
+		display: grid;
+		margin: 0 auto;
+		width: 100%;
+		max-width: 1200px;
+		padding-inline: 1rem;
+		gap: 2rem;
+		grid-template-columns: repeat(auto-fit, 320px);
+		justify-content: center;
+		padding-block: 3rem;
+	}
+
+	.card-title {
+		font-size: 1.3rem;
+		margin-bottom: 0;
+		padding-bottom: 0;
+	}
+
+	.card-p {
+		margin-top: 0.4em;
+		font-size: 1rem;
+		color: #989898;
+	}
+</style>
