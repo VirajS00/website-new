@@ -48,3 +48,17 @@ p {
     line-height: 1.5;
     font-size: 1.1rem;
 }
+
+a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 1.1rem;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+button {
+    font-size: inherit;
+}
