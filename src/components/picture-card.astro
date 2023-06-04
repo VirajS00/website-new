@@ -6,19 +6,28 @@ interface Props {
 	imageUrl: string;
 	imageAlt: string;
 	link: string;
+	aspectRatio?: number | `${number}:${number}`;
 	gradientColor1?: string;
 	gradientColor2?: string;
+	height?: number;
 }
 
-const { imageUrl, imageAlt, link, gradientColor1, gradientColor2 } =
-	Astro.props;
+const {
+	imageUrl,
+	imageAlt,
+	link,
+	gradientColor1,
+	gradientColor2,
+	aspectRatio,
+	height = 420,
+} = Astro.props;
 ---
 
 <Card
 	gradientColor2={gradientColor2}
 	gradientColor1={gradientColor1}
 	link={link}
-	height={420}
+	height={height}
 >
 	<div class='explore-card'>
 		<div class='img-cont' aria-hidden='true'>
@@ -29,6 +38,7 @@ const { imageUrl, imageAlt, link, gradientColor1, gradientColor2 } =
 				widths={[400]}
 				formats={["avif", "webp", "jpg"]}
 				alt={imageAlt}
+				aspectRatio={aspectRatio}
 			/>
 		</div>
 		<div class='content'>
@@ -39,6 +49,7 @@ const { imageUrl, imageAlt, link, gradientColor1, gradientColor2 } =
 					widths={[400]}
 					class='img-main'
 					formats={["avif", "webp", "jpg"]}
+					aspectRatio={aspectRatio}
 				/>
 			</div>
 			<div class='text'>
