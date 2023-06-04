@@ -1,5 +1,13 @@
 ---
-import FilmmakingCard from "../assets/fimmaking-card.jpg";
+import classNames from "classnames";
+import type { MenuItem } from "../types/menu-item";
+interface Props {
+	menuItems: MenuItem[];
+}
+
+const currentPath = Astro.url.pathname;
+
+const { menuItems } = Astro.props;
 ---
 
 <div class='menu'>
@@ -12,9 +20,16 @@ import FilmmakingCard from "../assets/fimmaking-card.jpg";
 	</label>
 	<nav class='menu-contents'>
 		<ul>
-			<li><a href='#'>Menu Item 1</a></li>
-			<li><a href='#'>Menu Item 2</a></li>
-			<li><a href='#'>Menu Item 3</a></li>
+			{
+				menuItems.map((item) => (
+					<li
+						class={classNames({
+							active: item.link === currentPath,
+						})}>
+						<a href={item.link}>{item.label}</a>
+					</li>
+				))
+			}
 		</ul>
 	</nav>
 </div>
@@ -56,11 +71,18 @@ import FilmmakingCard from "../assets/fimmaking-card.jpg";
 
 			li {
 				font-size: 2rem;
+				text-align: center;
+
+				&.active a {
+					color: #83acfa;
+				}
 
 				a {
 					color: #fff;
 					text-decoration: none;
 					transition: color 250ms ease;
+					font-size: 2.5rem;
+					font-weight: 600;
 
 					&:hover {
 						color: #5790fa;
