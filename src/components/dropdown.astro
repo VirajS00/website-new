@@ -13,7 +13,7 @@ const { dropdownItems } = Astro.props;
 ---
 
 <div class='container'>
-	<button class='dropdown-btn'>
+	<button class='dropdown-btn' aria-role='select'>
 		<slot />
 		<Icon name='mdi:arrow-down-drop' size={22} id='arrow-icon' />
 	</button>
@@ -41,8 +41,10 @@ const { dropdownItems } = Astro.props;
 
 		if (list.classList.contains("hide")) {
 			document.querySelector("#arrow-icon").style.transform = "rotate(0deg)";
+			button.setAttribute("aria-label", "Menu Closed");
 		} else {
 			document.querySelector("#arrow-icon").style.transform = "rotate(180deg)";
+			button.setAttribute("aria-label", "Menu Open");
 		}
 	});
 
@@ -53,8 +55,10 @@ const { dropdownItems } = Astro.props;
 
 		if (list.classList.contains("hide")) {
 			document.querySelector("#arrow-icon").style.transform = "rotate(0deg)";
+			button.setAttribute("aria-label", "Menu Closed");
 		} else {
 			document.querySelector("#arrow-icon").style.transform = "rotate(180deg)";
+			button.setAttribute("aria-label", "Menu Open");
 		}
 	});
 
@@ -65,8 +69,10 @@ const { dropdownItems } = Astro.props;
 
 		if (list.classList.contains("hide")) {
 			document.querySelector("#arrow-icon").style.transform = "rotate(0deg)";
+			button.setAttribute("aria-label", "Menu Closed");
 		} else {
 			document.querySelector("#arrow-icon").style.transform = "rotate(180deg)";
+			button.setAttribute("aria-label", "Menu Open");
 		}
 	});
 </script>
@@ -105,6 +111,11 @@ const { dropdownItems } = Astro.props;
 			max-height: 500px;
 			overflow-y: auto;
 			z-index: 1000;
+			opacity: 1;
+			pointer-events: all;
+			transform: scale(1);
+			transform-origin: top left;
+			transition: opacity 150ms ease, transform 150ms ease;
 
 			&::-webkit-scrollbar {
 				width: 0.5rem;
@@ -129,7 +140,9 @@ const { dropdownItems } = Astro.props;
 			}
 
 			&.hide {
-				display: none;
+				opacity: 0;
+				pointer-events: none;
+				transform: scale(0.95);
 			}
 
 			li {
