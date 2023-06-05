@@ -28,18 +28,20 @@ export const getVideoSummary = async (
 		"SELECT * FROM films"
 	)) as FilmsTableReturnType[];
 
-	const returnValue: VideSummary[] = ytData.items.map((x) => {
-		const videoId = x.snippet.resourceId.videoId;
+	const returnValue: VideSummary[] = dbData.map((x) => {
+		const videoId = x.film_id;
 
-		const dbDataFilm = dbData.find((x) => x.film_id === videoId);
+		const ytDataFilm = ytData.items.find(
+			(x) => x.snippet.resourceId.videoId === videoId
+		);
 
 		return {
-			category: dbDataFilm?.category ?? "",
-			short_description: dbDataFilm?.film_short_description ?? "",
-			thumbnail: x.snippet.thumbnails.high.url,
-			title: x.snippet.title,
-			year: dbDataFilm?.year ?? "",
+			category: x.category,
+			short_description: x.film_short_description,
+			thumbnail: ytDataFilm?.snippet.thumbnails.high.url ?? "",
+			title: ytDataFilm?.snippet.title ?? "",
 			videoId: videoId,
+			year: x.year,
 		};
 	});
 
