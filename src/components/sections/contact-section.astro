@@ -5,7 +5,7 @@ import ContactImage from "../../assets/contact-image.jpg";
 import { Icon } from "astro-icon";
 ---
 
-<Section>
+<Section class:list={"sec"}>
 	<div class='container'>
 		<div class='content'>
 			<div class='text-block'>
@@ -100,9 +100,17 @@ import { Icon } from "astro-icon";
 		grid-template-rows: 1.5fr 1fr;
 		height: calc(100vh - 100px);
 
+		@media screen and (min-width: 1600px) {
+			margin-top: 200px;
+		}
+
 		@media screen and (min-width: 600px) {
 			grid-template-columns: repeat(2, 1fr);
 			align-items: center;
+		}
+
+		@media screen and (min-width: 800px) {
+			margin-top: 250px;
 		}
 	}
 
@@ -130,10 +138,11 @@ import { Icon } from "astro-icon";
 
 	.subdued-title {
 		color: #787878;
+		margin-bottom: 0.5rem;
 	}
 
 	.content {
-		@media screen and (min-width: 1200px) {
+		@media screen and (min-width: 1600px) {
 			padding-left: 15rem;
 		}
 	}
@@ -162,7 +171,8 @@ import { Icon } from "astro-icon";
 
 			@media screen and (min-width: 600px) {
 				background-image: linear-gradient(90deg, #000, transparent),
-					linear-gradient(0deg, transparent 70%, #000 100%);
+					linear-gradient(0deg, transparent 70%, #000 100%),
+					linear-gradient(180deg, transparent 70%, #000 100%);
 				height: 100%;
 			}
 		}
@@ -192,6 +202,11 @@ import { Icon } from "astro-icon";
 		display: flex;
 		flex-wrap: wrap;
 		gap: 0.5em;
+		padding-bottom: 50px;
+
+		@media screen and (max-width: 800px) {
+			padding-bottom: 60px;
+		}
 	}
 
 	.logo-a {

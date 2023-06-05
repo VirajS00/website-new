@@ -24,7 +24,10 @@ const { menuItems } = Astro.props;
 				menuItems.map((item) => (
 					<li
 						class={classNames({
-							active: item.link === currentPath,
+							active:
+								item.link === currentPath ||
+								(item.link.startsWith("/films") &&
+									currentPath.startsWith("/films")),
 						})}>
 						<a href={item.link}>{item.label}</a>
 					</li>
