@@ -1,0 +1,122 @@
+---
+import {
+	getVideoIds,
+	getVideoDetails,
+} from "../../../helpers/get-videos-summary";
+import BaseLayout from "../../../layouts/base-layout.astro";
+
+export const getStaticPaths = async () => {
+	const videoIds = await getVideoIds();
+
+	return videoIds.map((x) => ({
+		params: { filmId: x },
+	}));
+};
+
+const { filmId } = Astro.params;
+
+const filmDetails = await getVideoDetails(filmId);
+---
+
+<BaseLayout title={filmDetails?.title ?? ""}>
+	<div class='container'>
+		<div class='video-wrapper'>
+			<iframe
+				width='560'
+				height='315'
+				src={`https://www.youtube.com/embed/${filmDetails.video_id}`}
+				title='YouTube video player'
+				frameborder='0'
+				allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+				allowfullscreen></iframe>
+		</div>
+		<div class='content'>
+			<div class='title-cont'>
+				<h1>{filmDetails.title}</h1>
+				<p>{filmDetails.category} ・ {filmDetails.year}</p>
+			</div>
+			<div class='desc'>
+				<div class='yt-desc' set:html={filmDetails.description} />
+			</div>
+		</div>
+	</div>
+</BaseLayout>
+
+<style lang='scss'>
+	.container {
+		width: 100%;
+		max-width: 800px;
+		margin: 0 auto;
+		padding-top: 100px;
+		padding-bottom: 100px;
+	}
+
+	.content {
+		@media screen and (max-width: 800px) {
+			padding: 0 2rem;
+		}
+	}
+
+	.video-wrapper {
+		position: relative;
+		padding-bottom: 56.25%;
+		/* 16:9 */
+		padding-top: 25px;
+		height: 0;
+
+		iframe {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+		}
+	}
+
+	.title-cont {
+		margin-bottom: 2em;
+		margin-top: 2em;
+
+		p {
+			padding: 0;
+			margin: 0;
+			color: #9d9d9d;
+		}
+
+		h1 {
+			padding: 0;
+			margin: 0;
+		}
+	}
+
+	.desc {
+		max-height: 500px;
+		overflow-y: auto;
+
+		&::-webkit-scrollbar {
+			width: 0.6rem;
+			height: 0.6rem;
+		}
+
+		&::-webkit-scrollbar-track {
+			background-color: transparent;
+		}
+
+		&::-webkit-scrollbar-thumb {
+			border: 1px solid transparent;
+			border-radius: 10px;
+			background-color: #8b8b8b;
+			background-clip: content-box;
+			border-left-width: 3px;
+			border-right-width: 3px;
+
+			&:hover {
+				background-color: #7c7c7c;
+			}
+		}
+
+		a {
+			color: #a5a5ff !important;
+		}
+	}
+</style>

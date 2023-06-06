@@ -3,6 +3,7 @@ import Dropdown from "../../components/dropdown.astro";
 import PictureCard from "../../components/picture-card.astro";
 import {
 	getCurrentCategories,
+	getVideoIds,
 	getVideoSummary,
 } from "../../helpers/get-videos-summary";
 import BaseLayout from "../../layouts/base-layout.astro";
@@ -43,7 +44,7 @@ const categoriesDropDownItems: MenuItem[] = currentCategories.map((x) => ({
 					<PictureCard
 						imageUrl={video.thumbnail}
 						imageAlt={`thumbnail - ${video.thumbnail}`}
-						link={`/films/${video.videoId}`}
+						link={`/films/details/${video.videoId}`}
 						height={500}
 						aspectRatio={"4:3"}>
 						<h3 class='film-name'>{video.title}</h3>
