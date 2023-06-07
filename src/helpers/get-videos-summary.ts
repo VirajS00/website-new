@@ -47,9 +47,9 @@ export const getVideoSummary = async (
 	});
 
 	if (category === "all") {
-		return returnValue;
+		return returnValue.reverse();
 	} else {
-		return returnValue.filter((x) => x.category === category);
+		return returnValue.filter((x) => x.category === category).reverse();
 	}
 };
 
