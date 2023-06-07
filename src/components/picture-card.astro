@@ -3,13 +3,14 @@ import { Picture } from "@astrojs/image/components";
 import Card from "./card.astro";
 
 interface Props {
-	imageUrl: string;
+	imageUrl: string | Promise<any>;
 	imageAlt: string;
 	link: string;
 	aspectRatio?: number | `${number}:${number}`;
 	gradientColor1?: string;
 	gradientColor2?: string;
 	height?: number;
+	imageFit?: "cover" | "contain" | "fill" | "inside" | "outside";
 }
 
 const {
@@ -20,6 +21,7 @@ const {
 	gradientColor2,
 	aspectRatio,
 	height = 420,
+	imageFit = "cover",
 } = Astro.props;
 ---
 
@@ -39,6 +41,7 @@ const {
 				formats={["avif", "webp", "jpg"]}
 				alt={imageAlt}
 				aspectRatio={aspectRatio}
+				fit={imageFit}
 			/>
 		</div>
 		<div class='content'>

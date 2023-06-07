@@ -1,0 +1,80 @@
+---
+import { getCollection, getEntryBySlug } from "astro:content";
+import BaseLayout from "../../layouts/base-layout.astro";
+import { Picture } from "@astrojs/image/components";
+// 1. Generate a new path for every collection entry
+export async function getStaticPaths() {
+    const blogEntries = await getCollection("blog");
+    return blogEntries.map((entry) => ({
+        params: { slug: entry.slug },
+        props: { entry },
+    }));
+}
+
+const { entry: ent } = Astro.props;
+const { slug } = Astro.params;
+
+const { Content } = await ent.render();
+const entry = await getEntryBySlug("blog", slug as any);
+---
+
+<BaseLayout title='fojjof'>
+    <div class='content'>
+        <div class='inner-content'>
+            <Picture
+                src={import(`../../assets/blog/pictures/${entry?.data.image}`)}
+                alt={entry?.data.title ?? ""}
+                widths={[500]}
+                class='img-main'
+                formats={["avif", "webp", "jpg"]}
+                aspectRatio='1:1'
+            />
+            <div>
+                <h1>{entry?.data.title}</h1>
+                <Content />
+            </div>
+        </div>
+    </div>
+</BaseLayout>
+
+<style lang='scss'>
+    .content {
+        padding-top: 100px;
+        padding-inline: 2rem;
+        margin: 0 auto;
+        padding-bottom: 80px;
+
+        @media screen and (min-width: 800px) {
+            padding-inline: 0;
+        }
+    }
+
+    h1 {
+        @media screen and (min-width: 800px) {
+            margin-block-start: 0;
+        }
+    }
+
+    .img-main {
+        @media screen and (min-width: 800px) {
+            position: sticky;
+            top: 1rem;
+            margin-inline-start: 1rem;
+        }
+    }
+
+    .inner-content {
+        max-width: 1200px;
+        margin: 0 auto;
+
+        @media screen and (min-width: 800px) {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 1.5rem;
+
+            div {
+                padding-inline: 2rem;
+            }
+        }
+    }
+</style>
