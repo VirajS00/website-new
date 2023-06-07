@@ -26,7 +26,7 @@ export const getVideoSummary = async (
 	const ytData = (await res.json()) as YoutubeApiResponseType;
 
 	const dbData = (await getData(
-		"SELECT * FROM films"
+		"SELECT * FROM films ORDER BY sort_order ASC"
 	)) as FilmsTableReturnType[];
 
 	const returnValue: VideSummary[] = dbData.map((x) => {
@@ -102,7 +102,10 @@ export const getVideoDetails = async (
 			(y) => y.snippet.resourceId.videoId === x.film_id
 		);
 
-		const autolinker = new Autolinker({ newWindow: true, className: "lnk" });
+		const autolinker = new Autolinker({
+			newWindow: true,
+			className: "film-desc-link",
+		});
 
 		return {
 			video_id: x.film_id,
