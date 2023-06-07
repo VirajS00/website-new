@@ -4,6 +4,7 @@ import {
 	getVideoDetails,
 } from "../../../helpers/get-videos-summary";
 import BaseLayout from "../../../layouts/base-layout.astro";
+import { FilmCategories } from "../../../types/film-categories";
 
 export const getStaticPaths = async () => {
 	const videoIds = await getVideoIds();
@@ -33,7 +34,9 @@ const filmDetails = await getVideoDetails(filmId);
 		<div class='content'>
 			<div class='title-cont'>
 				<h1>{filmDetails.title}</h1>
-				<p>{filmDetails.category} ・ {filmDetails.year}</p>
+				<p>
+					{FilmCategories[filmDetails.category as never]} ・ {filmDetails.year}
+				</p>
 			</div>
 			<div class='desc'>
 				<div class='yt-desc' set:html={filmDetails.description} />
