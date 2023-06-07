@@ -32,46 +32,59 @@ const { dropdownItems } = Astro.props;
 	</ul>
 </div>
 
-<script lang='typescript'>
-	const button = document.querySelector(".dropdown-btn");
-	const list = document.querySelector(".list");
+<script>
+	const button: HTMLButtonElement | null = document.querySelector(".dropdown-btn");
+	const list: HTMLUListElement | null = document.querySelector(".list");
+	const arrowIcon: HTMLOrSVGImageElement | null = document.querySelector("#arrow-icon");
 
-	button.addEventListener("click", () => {
+	button?.addEventListener("click", () => {
+		if (!list) return;
+		if (!arrowIcon) return;
+		if (!button) return;
+
 		list.classList.toggle("hide");
 
 		if (list.classList.contains("hide")) {
-			document.querySelector("#arrow-icon").style.transform = "rotate(0deg)";
+			arrowIcon.style.transform = "rotate(0deg)";
 			button.setAttribute("aria-label", "Menu Closed");
 		} else {
-			document.querySelector("#arrow-icon").style.transform = "rotate(180deg)";
+			arrowIcon.style.transform = "rotate(180deg)";
 			button.setAttribute("aria-label", "Menu Open");
 		}
 	});
 
 	window.addEventListener("click", (e) => {
+		if (!list) return;
+		if (!arrowIcon) return;
+		if (!button) return;
+
 		if (e.target !== list && e.target !== button) {
 			list.classList.add("hide");
 		}
 
 		if (list.classList.contains("hide")) {
-			document.querySelector("#arrow-icon").style.transform = "rotate(0deg)";
+			arrowIcon.style.transform = "rotate(0deg)";
 			button.setAttribute("aria-label", "Menu Closed");
 		} else {
-			document.querySelector("#arrow-icon").style.transform = "rotate(180deg)";
+			arrowIcon.style.transform = "rotate(180deg)";
 			button.setAttribute("aria-label", "Menu Open");
 		}
 	});
 
 	window.addEventListener("keyup", (e) => {
+		if (!list) return;
+		if (!arrowIcon) return;
+		if (!button) return;
+
 		if (e.key === "Escape" && !list.classList.contains("hide")) {
 			list.classList.add("hide");
 		}
 
 		if (list.classList.contains("hide")) {
-			document.querySelector("#arrow-icon").style.transform = "rotate(0deg)";
+			arrowIcon.style.transform = "rotate(0deg)";
 			button.setAttribute("aria-label", "Menu Closed");
 		} else {
-			document.querySelector("#arrow-icon").style.transform = "rotate(180deg)";
+			arrowIcon.style.transform = "rotate(180deg)";
 			button.setAttribute("aria-label", "Menu Open");
 		}
 	});

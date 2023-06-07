@@ -37,10 +37,11 @@ const { menuItems } = Astro.props;
 	</nav>
 </div>
 
-<script lang='ts'>
-	const checkbox = document.querySelector(".menu-check");
+<script>
+	const checkbox: HTMLInputElement | null = document.querySelector(".menu-check");
 
 	document.addEventListener("keyup", (e) => {
+		if (!checkbox) return;
 		if (e.key === "Escape" && checkbox.checked) {
 			checkbox.checked = false;
 			checkbox.blur();
