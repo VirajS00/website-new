@@ -3,7 +3,7 @@ import { Picture } from "@astrojs/image/components";
 import Card from "./card.astro";
 
 interface Props {
-	imageUrl: string | Promise<any>;
+	imageUrl: string;
 	imageAlt: string;
 	link: string;
 	aspectRatio?: number | `${number}:${number}`;
@@ -11,6 +11,7 @@ interface Props {
 	gradientColor2?: string;
 	height?: number;
 	imageFit?: "cover" | "contain" | "fill" | "inside" | "outside";
+	imageType?: "astro-image" | "html-image";
 }
 
 const {
@@ -22,6 +23,7 @@ const {
 	aspectRatio,
 	height = 420,
 	imageFit = "cover",
+	imageType = "astro-image",
 } = Astro.props;
 ---
 
@@ -34,26 +36,51 @@ const {
 	<div class='explore-card'>
 		<div class='img-cont' aria-hidden='true'>
 			<div class='img-blur-overlay'></div>
-			<Picture
-				src={imageUrl}
-				class='img-bg'
-				widths={[400]}
-				formats={["avif", "webp", "jpg"]}
-				alt={imageAlt}
-				aspectRatio={aspectRatio}
-				fit={imageFit}
-			/>
+			{
+				imageType === "astro-image" ? (
+					<Picture
+						src={imageUrl}
+						class='img-bg'
+						widths={[400]}
+						formats={["avif", "webp", "jpg"]}
+						alt={imageAlt}
+						aspectRatio={aspectRatio}
+						fit={imageFit}
+					/>
+				) : (
+					<img
+						src={imageUrl}
+						alt={imageAlt}
+						width='400'
+						class='img-bg'
+						style={`object-fit: ${imageFit}; aspect-ratio: ${aspectRatio};`}
+					/>
+				)
+			}
 		</div>
 		<div class='content'>
 			<div class='img-main-cont'>
-				<Picture
-					src={imageUrl}
-					alt={imageAlt}
-					widths={[400]}
-					class='img-main'
-					formats={["avif", "webp", "jpg"]}
-					aspectRatio={aspectRatio}
-				/>
+				{
+					imageType === "astro-image" ? (
+						<Picture
+							src={imageUrl}
+							class='img-main'
+							widths={[400]}
+							formats={["avif", "webp", "jpg"]}
+							alt={imageAlt}
+							aspectRatio={aspectRatio}
+							fit={imageFit}
+						/>
+					) : (
+						<img
+							src={imageUrl}
+							alt={imageAlt}
+							width='400'
+							class='img-main'
+							style={`object-fit: ${imageFit}; aspect-ratio: ${aspectRatio};`}
+						/>
+					)
+				}
 			</div>
 			<div class='text'>
 				<slot />

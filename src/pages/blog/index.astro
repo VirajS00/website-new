@@ -14,9 +14,7 @@ const blogPosts = await getCollection("blog");
             {
                 blogPosts.map((post) => (
                     <PictureCard
-                        imageUrl={import(
-                            `../../assets/blog/pictures/${post.data.thumbnail}`
-                        )}
+                        imageUrl={`/blog/${post.data.thumbnail}`}
                         imageAlt={`thumbnail - ${post.data.title}`}
                         link={`/blog/${post.slug}`}
                         height={500}
