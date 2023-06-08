@@ -18,7 +18,7 @@ const { Content } = await ent.render();
 const entry = await getEntryBySlug("blog", slug as any);
 ---
 
-<BaseLayout title='fojjof'>
+<BaseLayout title={entry?.data.title ?? ""}>
     <div class='content'>
         <div class='inner-content'>
             <Picture
