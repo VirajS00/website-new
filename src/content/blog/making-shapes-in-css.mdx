@@ -8,21 +8,62 @@ tags:
   - Web Dev
 ---
 
-This project was a fun project I Did where I tried to replicate some brand and app logos in HTML and CSS. The two logos on the right are made using CSS. You can check out the project here. ',
+This project was a fun project I Did where I tried to replicate some brand and app logos in HTML and CSS. You can check out the project [here](https://virajs00.github.io/css-logos/).
 
-It was a fun project and took some time to do since whenever I wanted to work on it, I was working on it in the middle. This project first involved which logos can be replicated, the complexity of the logo went up as I added more. One thing that helped me in making these logos is breaking them down into basic shapes and then come down to coding them.
+This project is inspired by this YouTube video by Web Dev Simplified where he tried to [make emojis in css](https://www.youtube.com/watch?v=P3LXA6duP5g).
 
-I took a help of a few resources such as a gradient generator by and a page by which explained how to make basic shapes in css which was very helpful.
-
-I took a help of a few resources such as a gradient generator by and a page by which explained how to make basic shapes in css which was very helpful.
+The project uses `CSS custom properties` to make sizing easier along with `calc()` to make everything scale to the desired size.
 
 ```css
-.triangle {
-	height: 0;
-	width: 0;
-	border: 50px solid transparent;
-	border-top-color: red;
+:root {
+	--logo-size: 200px;
+}
+
+.logo {
+	height: var(--logo-size);
+	width: var(--logo-size);
+
+	/* border using calc */
+	border: calc(var(--logo-size) * 0.03) solid #ccc;
+	border-radius: calc(var(--logo-size) * 0.15);
 }
 ```
 
-Overall it was a fun project and might add more logos to it.
+The `calc()` function in css allows us to calculate things. It is a great tool to help out with making things in css. You can learn more about the `calc()` function here which is a video by YouTuber Kevin Powell, his channel is a great resource for CSS.
+
+The other thing that was interesting is the creation of basic shapes in css such as a triangle, trapezium, etc which is well explained in this [CSS tricks article](https://css-tricks.com/the-shapes-of-css/).
+
+For example you can use borders to create triangles (this with create an upward facing triangle):
+
+```css
+.triangle {
+	width: 0;
+	height: 0;
+	border: 100px solid transparent;
+	border-bottom: 100px solid red;
+}
+```
+
+The setting width and height to “0” is super important since otherwise it will not look like a triangle.
+
+// Example
+
+_This is why you can use borders as triangles._
+
+There was also one more trick I used pertaining to gradients where you can get a hard stop to a gradient when the end of another colour is the start of the next one.
+
+```css
+.gradient-hard {
+	width: 100px;
+	height: 100px;
+	background-image: linear-gradient(red 50%, white 50%);
+}
+```
+
+This generates a hard stop in the gradient since red is from 0% - 50% and white starts at 50% (which is the same place where red ends) and ends at 100%.
+
+// Example
+
+_The output to the code with an outline_
+
+You can also do that same with `radial-gradient` and it can create hard stops between 2 circles. Since a gradient is a `background-image`, you can play around with the `background-position` and `background-size` properties as well to create patterns with it.

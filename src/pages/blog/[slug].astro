@@ -21,13 +21,15 @@ const entry = await getEntryBySlug("blog", slug as any);
 <BaseLayout title={entry?.data.title ?? ""}>
     <div class='content'>
         <div class='inner-content'>
-            <Picture
-                src={`/blog/${entry?.data.image}`}
-                alt={entry?.data.title ?? ""}
-                widths={[500]}
-                aspectRatio='1:1'
-                formats={["avif", "webp", "jpg"]}
-            />
+            <div class='img-cont'>
+                <Picture
+                    src={`/blog/${entry?.data.image}`}
+                    alt={entry?.data.title ?? ""}
+                    widths={[500]}
+                    aspectRatio='1:1'
+                    formats={["avif", "webp", "jpg"]}
+                />
+            </div>
             <div>
                 <h1>{entry?.data.title}</h1>
                 <Content />
@@ -54,11 +56,12 @@ const entry = await getEntryBySlug("blog", slug as any);
         }
     }
 
-    .img-main {
+    .img-cont {
         @media screen and (min-width: 800px) {
             position: sticky;
             top: 1rem;
             margin-inline-start: 1rem;
+            height: calc(100vh - 100px);
         }
     }
 
@@ -73,6 +76,11 @@ const entry = await getEntryBySlug("blog", slug as any);
 
             div {
                 padding-inline: 2rem;
+                font-size: 0.875rem;
+
+                h1 {
+                    font-size: 1.9rem;
+                }
             }
         }
     }
