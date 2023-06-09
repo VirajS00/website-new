@@ -1,6 +1,6 @@
 ---
 import classNames from "classnames";
-import type { MenuItem } from "../types/menu-item";
+import type { MenuItem } from "../../types/menu-item";
 interface Props {
 	menuItems: MenuItem[];
 }
@@ -38,7 +38,8 @@ const { menuItems } = Astro.props;
 </div>
 
 <script>
-	const checkbox: HTMLInputElement | null = document.querySelector(".menu-check");
+	const checkbox: HTMLInputElement | null =
+		document.querySelector(".menu-check");
 
 	document.addEventListener("keyup", (e) => {
 		if (!checkbox) return;

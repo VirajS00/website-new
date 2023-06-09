@@ -1,9 +1,8 @@
 ---
-import Dropdown from "../../components/dropdown.astro";
-import PictureCard from "../../components/picture-card.astro";
+import Dropdown from "../../components/general/dropdown.astro";
+import PictureCard from "../../components/general/picture-card.astro";
 import {
 	getCurrentCategories,
-	getVideoIds,
 	getVideoSummary,
 } from "../../helpers/get-videos-summary";
 import BaseLayout from "../../layouts/base-layout.astro";
@@ -49,7 +48,8 @@ const categoriesDropDownItems: MenuItem[] = currentCategories.map((x) => ({
 						aspectRatio={"4:3"}>
 						<h3 class='film-name'>{video.title}</h3>
 						<div class='film-meta'>
-							{FilmCategories[video.category as never]} ・ {video.year}
+							{FilmCategories[video.category as never]} ・{" "}
+							{video.year}
 						</div>
 						<p class='film-desc'>{video.short_description}</p>
 					</PictureCard>

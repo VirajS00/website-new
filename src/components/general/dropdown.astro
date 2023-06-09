@@ -1,7 +1,7 @@
 ---
 import { Icon } from "astro-icon";
-import type { MenuItem } from "../types/menu-item";
 import classNames from "classnames";
+import type { MenuItem } from "../../types/menu-item";
 
 interface Props {
 	dropdownItems: MenuItem[];
@@ -23,7 +23,9 @@ const { dropdownItems } = Astro.props;
 				<li>
 					<a
 						href={item.link}
-						class={classNames({ active: item.link === currentPath })}>
+						class={classNames({
+							active: item.link === currentPath,
+						})}>
 						{item.label}
 					</a>
 				</li>
@@ -33,9 +35,11 @@ const { dropdownItems } = Astro.props;
 </div>
 
 <script>
-	const button: HTMLButtonElement | null = document.querySelector(".dropdown-btn");
+	const button: HTMLButtonElement | null =
+		document.querySelector(".dropdown-btn");
 	const list: HTMLUListElement | null = document.querySelector(".list");
-	const arrowIcon: HTMLOrSVGImageElement | null = document.querySelector("#arrow-icon");
+	const arrowIcon: HTMLOrSVGImageElement | null =
+		document.querySelector("#arrow-icon");
 
 	button?.addEventListener("click", () => {
 		if (!list) return;
