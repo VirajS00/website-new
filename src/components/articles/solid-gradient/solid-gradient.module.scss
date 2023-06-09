@@ -1,0 +1,23 @@
+.ControlsContainer {
+    margin-top: 1rem;
+
+    h2 {
+        margin-block: 0.3em;
+        padding: 0;
+        text-align: left;
+    }
+}
+
+.ControlsContainer {
+    margin-top: 1rem;
+}
+
+.gradientExample {
+    height: 160px;
+    width: 160px;
+    background-image: linear-gradient(
+        rgb(179, 255, 38) 20%,
+        rgb(80, 80, 253) 20% var(--gradient-percentage, 60%),
+        #fff 60%
+    );
+}

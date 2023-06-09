@@ -1,0 +1,13 @@
+.triangles {
+    height: 160px;
+    width: 160px;
+    background-color: white;
+    border: var(--border-width, 80px) solid blue;
+    border-top-color: red;
+    border-bottom-color: yellow;
+    border-right-color: green;
+}
+
+.ControlsContainer {
+    margin-top: 1rem;
+}

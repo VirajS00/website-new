@@ -8,9 +8,13 @@ tags:
   - Web Dev
 ---
 
-This project was a fun project I Did where I tried to replicate some brand and app logos in HTML and CSS. You can check out the project [here](https://virajs00.github.io/css-logos/).
+import { Triangle } from "../../components/articles/triangle";
+import { SolidGradientExample } from "../../components/articles/solid-gradient";
 
-This project is inspired by this YouTube video by Web Dev Simplified where he tried to [make emojis in css](https://www.youtube.com/watch?v=P3LXA6duP5g).
+This started with a [CSS tricks article](https://css-tricks.com/the-shapes-of-css/) and a [youtube video](https://www.youtube.com/watch?v=P3LXA6duP5g) by Web Dev Simplified in which they made basic shapes with CSS.
+I decided to repliate vector app icons.
+
+For this project, I tried to replicate some brand and app logos in HTML and CSS. You can check out the project [here](https://virajs00.github.io/css-logos/).
 
 The project uses `CSS custom properties` to make sizing easier along with `calc()` to make everything scale to the desired size.
 
@@ -44,9 +48,9 @@ For example you can use borders to create triangles (this with create an upward 
 }
 ```
 
-The setting width and height to “0” is super important since otherwise it will not look like a triangle.
+The setting width and height to “0” is super important since otherwise it will not look like a triangle. Move the slider below to see the border thickness chnage.
 
-// Example
+<Triangle client:visible />
 
 _This is why you can use borders as triangles._
 
@@ -62,7 +66,7 @@ There was also one more trick I used pertaining to gradients where you can get a
 
 This generates a hard stop in the gradient since red is from 0% - 50% and white starts at 50% (which is the same place where red ends) and ends at 100%.
 
-// Example
+<SolidGradientExample client:visible />
 
 _The output to the code with an outline_
 

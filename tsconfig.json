@@ -1,7 +1,10 @@
 {
-	"extends": "astro/tsconfigs/strict",
-	"compilerOptions": {
-		// Replace `astro/client` with `@astrojs/image/client`
-		"types": ["@astrojs/image/client"]
-	}
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    "types": [
+      "@astrojs/image/client"
+    ],
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js"
+  }
 }
