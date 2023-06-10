@@ -60,14 +60,10 @@ There was also one more trick I used pertaining to gradients where you can get a
 .gradient-hard {
 	width: 100px;
 	height: 100px;
-	background-image: linear-gradient(red 50%, white 50%);
+	background-image: linear-gradient(green 20%, blue 20% 60%, white 60%);
 }
 ```
 
-This generates a hard stop in the gradient since red is from 0% - 50% and white starts at 50% (which is the same place where red ends) and ends at 100%.
-
 <SolidGradientExample client:visible />
-
-_The output to the code with an outline_
 
 You can also do that same with `radial-gradient` and it can create hard stops between 2 circles. Since a gradient is a `background-image`, you can play around with the `background-position` and `background-size` properties as well to create patterns with it.
