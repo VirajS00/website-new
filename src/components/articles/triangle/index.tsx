@@ -29,10 +29,7 @@ export const Triangle: Component = () => {
 				<label for='range-triangle' class='hidden'>
 					Blue gradient percentage
 				</label>
-				<p>
-					Border Thickness:{" "}
-					{rangeValue() < 10 ? `0${rangeValue()}` : rangeValue()}px
-				</p>
+				<p>Border Thickness: {rangeValue()}px</p>
 			</div>
 		</div>
 	);

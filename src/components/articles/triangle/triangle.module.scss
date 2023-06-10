@@ -11,3 +11,12 @@
 .ControlsContainer {
     margin-top: 1rem;
 }
+
+.ControlsContainer {
+    text-align: center;
+
+    @media screen and (min-width: 600px) {
+        width: 100%;
+        text-align: unset;
+    }
+}

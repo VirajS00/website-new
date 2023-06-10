@@ -21,3 +21,12 @@
         #fff 60%
     );
 }
+
+.ControlsContainer {
+    text-align: center;
+
+    @media screen and (min-width: 600px) {
+        width: 100%;
+        text-align: unset;
+    }
+}

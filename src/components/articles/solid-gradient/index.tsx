@@ -30,10 +30,7 @@ export const SolidGradientExample: Component = () => {
 					Blue gradient percentage
 				</label>
 				<div>
-					<p>
-						Gradient Blue Percentage:{" "}
-						{rangeValue() < 10 ? `0${rangeValue()}` : rangeValue()}%
-					</p>
+					<p>Gradient Blue Percentage: {rangeValue()}%</p>
 					<p>Gradient White start percent: 60%</p>
 				</div>
 			</div>

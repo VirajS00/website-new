@@ -1,0 +1,61 @@
+input[type='radio'] {
+    + .radioLabel {
+        position: relative;
+        cursor: pointer;
+        padding: 0.5em 1em;
+        background-color: rgb(255 255 255 / 0.25);
+        border-radius: 0.25em;
+        font-size: 1.1rem;
+        transition: background-color 80ms ease;
+    }
+
+    &:focus-visible + .radioLabel {
+        border: 2px solid #d5bcff;
+    }
+
+    &:checked + .radioLabel {
+        background-color: rgb(255 255 255 / 0.9);
+        color: rgb(37, 37, 83);
+    }
+}
+
+.exampleContent {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(1fr, 0px));
+}
+
+.hideInput {
+    position: absolute;
+    transform: scale(0);
+}
+
+.buttonsContainer {
+    display: flex;
+    gap: 0.5em;
+}
+
+.borderRadiusContainer {
+    height: 160px;
+    width: 160px;
+    background-color: #fff;
+    display: grid;
+    place-items: center;
+
+    .borderRadiusExaple {
+        background-color: red;
+        height: 75px;
+        width: 120px;
+        border-radius: var(--border-radius, 100px) 0;
+    }
+}
+
+.ControlsContainer {
+    margin-top: 1.5rem;
+    text-align: center;
+
+    @media screen and (min-width: 600px) {
+        width: 100%;
+        margin-top: 0rem;
+        text-align: unset;
+    }
+}
