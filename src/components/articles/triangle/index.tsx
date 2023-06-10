@@ -19,7 +19,7 @@ export const Triangle: Component = () => {
 					type='range'
 					name='range-triangle'
 					id='range-triangle'
-					onchange={(e) => setRangeValue(parseInt(e.target.value))}
+					oninput={(e) => setRangeValue(parseInt(e.target.value))}
 					value={rangeValue()}
 					max={80}
 					min={5}

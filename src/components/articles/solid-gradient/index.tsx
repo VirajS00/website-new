@@ -19,7 +19,7 @@ export const SolidGradientExample: Component = () => {
 					type='range'
 					name='range-solid-gradient'
 					id='range-solid-gradient'
-					onchange={(e) => setRangeValue(parseInt(e.target.value))}
+					oninput={(e) => setRangeValue(parseInt(e.target.value))}
 					value={rangeValue()}
 					max={60}
 					min={20}
