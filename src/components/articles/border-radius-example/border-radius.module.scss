@@ -32,6 +32,11 @@ input[type='radio'] {
 .buttonsContainer {
     display: flex;
     gap: 0.5em;
+    justify-content: center;
+
+    @media screen and (min-width: 600px) {
+        justify-content: start;
+    }
 }
 
 .borderRadiusContainer {
