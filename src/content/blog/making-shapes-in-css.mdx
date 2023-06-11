@@ -11,6 +11,9 @@ tags:
 import { Triangle } from "../../components/articles/triangle";
 import { SolidGradientExample } from "../../components/articles/solid-gradient";
 import { BorderRadiusExample } from "../../components/articles/border-radius-example";
+import AnchorElement from "../../components/markdown-components/anchor-element.astro";
+
+export const components = { a: AnchorElement };
 
 This started with a [CSS tricks article](https://css-tricks.com/the-shapes-of-css/) and a [youtube video](https://www.youtube.com/watch?v=P3LXA6duP5g) by Web Dev Simplified in which they made basic shapes with CSS.
 I decided to repliate vector app icons.
@@ -74,3 +77,5 @@ Border radius is also something you can mess with to create a leaf-like shape, y
 <BorderRadiusExample client:visible />
 
 These are maily the things I used for [this project](https://virajs00.github.io/css-logos/). There are many other creative ways to have fun with CSS.
+
+Hope you had fun reading this article and have a great day!
