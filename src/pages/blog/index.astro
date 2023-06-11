@@ -13,26 +13,28 @@ const blogPosts = await getCollection("blog");
         <div class='cards-container'>
             {
                 blogPosts.map((post) => (
-                    <PictureCard
-                        imageUrl={`/blog/${post.data.thumbnail}`}
-                        imageAlt={`thumbnail - ${post.data.title}`}
-                        link={`/blog/${post.slug}`}
-                        height={500}
-                        aspectRatio={"3:2"}>
-                        <div class='card-content'>
-                            <div>
-                                <h3 class='film-name'>{post.data.title}</h3>
-                                <p class='film-desc'>
-                                    {post.data.short_description}
-                                </p>
+                    <>
+                        <PictureCard
+                            imageUrl={`/blog/${post.data.thumbnail}`}
+                            imageAlt={`thumbnail - ${post.data.title}`}
+                            link={`/blog/${post.slug}`}
+                            height={500}
+                            aspectRatio={"3:2"}>
+                            <div class='card-content'>
+                                <div>
+                                    <h3 class='film-name'>{post.data.title}</h3>
+                                    <p class='film-desc'>
+                                        {post.data.short_description}
+                                    </p>
+                                </div>
+                                <div class='tags'>
+                                    {post.data.tags.map((tag: string) => (
+                                        <div class='tag'>{tag}</div>
+                                    ))}
+                                </div>
                             </div>
-                            <div class='tags'>
-                                {post.data.tags.map((tag) => (
-                                    <div class='tag'>{tag}</div>
-                                ))}
-                            </div>
-                        </div>
-                    </PictureCard>
+                        </PictureCard>
+                    </>
                 ))
             }
         </div>
@@ -43,20 +45,28 @@ const blogPosts = await getCollection("blog");
     .content {
         padding-top: 100px;
         max-width: 1200px;
-        padding-inline: 2rem;
         margin: 0 auto;
 
-        @media screen and (min-width: 600px) {
-            padding-inline: 0;
+        > h1 {
+            padding-inline: 2rem;
+
+            @media screen and (min-width: 960px) {
+                padding-inline: 0;
+            }
         }
     }
 
-    .card-container {
+    .cards-container {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
         gap: 2em;
         width: 100%;
         padding-inline: 2rem;
+        padding-bottom: 0;
+
+        @media screen and (min-width: 960px) {
+            padding-inline: 0;
+        }
     }
 
     .tags {
@@ -78,6 +88,5 @@ const blogPosts = await getCollection("blog");
         flex-direction: column;
         height: 100%;
         justify-content: space-between;
-        padding-block-end: 1rem;
     }
 </style>
