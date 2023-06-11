@@ -9,17 +9,15 @@ tags:
 ---
 
 import AnchorElement from "../../components/markdown-components/anchor-element.astro";
-import Example from "../../components/markdown-components/example.astro";
+import Blockquote from "../../components/markdown-components/blockquote.astro";
 
-export const components = { a: AnchorElement };
+export const components = { a: AnchorElement, blockquote: Blockquote };
 
 This project was a small but fun project that I did. It involved creating a SASS Map which was used to generate different classes based on the theme names from the map. You can check out the project [here](https://sass-custom-themes.netlify.app/).
 
-<Example>
-	in case you're wondering about the `hsl(216 100% 12% / 0.8)` color syntax, it
-	is equivilant to `hsla(216, 100%, 12%, 0.8)`. This is the new color syntax for
-	CSS, notice how its `hsl` not `hsla` now.
-</Example>
+> in case you're wondering about the `hsl(216 100% 12% / 0.8)` color syntax, it
+> is equivilant to `hsla(216, 100%, 12%, 0.8)`. This is the new color syntax for
+> CSS, notice how its `hsl` not `hsla` now.
 
 Here is an example of one theme:
 
