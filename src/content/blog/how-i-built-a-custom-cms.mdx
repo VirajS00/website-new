@@ -1,0 +1,128 @@
+---
+title: How I built a custom CMS
+short_description: SASS Maps are like JavaScript objects for SASS, let's see how to craete color themes with them.
+thumbnail: thumbnails/color-themes-with-sass-maps.jpeg
+image: pictures/color-themes-with-sass-maps.png
+tags:
+  - SCSS
+  - Web Dev
+---
+
+import { Picture } from "@astrojs/image/components";
+import AnchorElement from "../../components/markdown-components/anchor-element.astro";
+
+export const components = { a: AnchorElement };
+
+This is an Admin Page/Content Management system I made for my website. This is made in PHP, MySQL.
+
+You can find the [GitHub repository](https://github.com/VirajS00/WebAdmin) here.
+
+This project started out with the analytics, I wanted to create the analytics myself. I got the browser name, operating system and device type using the `$_SERVER['HTTP_USER_AGENT']` super global in PHP.
+I got the page the user is on using `$_SERVER[\'PHP_SELF\']`. For the country I used `$_SERVER['REMOTE_ADDR']`and then queried an [API](https://www.geoplugin.com/).
+To graph out the analytics on the homepage of the admin, I used [chart.js](https://www.chartjs.org/).
+
+Got the data from php where I exported it as json imported it into JavaScript using the `fetch()` API built into the browser and created the charts.
+
+<Picture
+	src='/blog/pictures/image-admin-1.png'
+	class='img-bg'
+	widths={[500]}
+	formats={["avif", "webp", "jpg"]}
+	alt='Layouts'
+	aspectRatio='219:200'
+	fit='cover'
+	style='max-width: 400px; margin: 0 auto; display: block;'
+/>
+
+For the "Photos" and "Other Content" page, I got the data in using PHP and then used a script which I created with the help of this [tutorial](https://www.youtube.com/watch?v=jfYWwQrtzzY) by Web Dev Simplified on YouTube for rearranging the photos,
+then using `fetch()`, I linked it to PHP to update the MySQL database.
+
+<Picture
+	src='/blog/pictures/image-admin-2.png'
+	class='img-bg'
+	widths={[600]}
+	formats={["avif", "webp", "jpg"]}
+	alt='Layouts'
+	aspectRatio='139:100'
+	fit='cover'
+	style='max-width: 600px; margin: 0 auto; display: block;'
+/>
+
+In the upload pages, the image upload buttons get a loader when you select an image, the images are uploaded in a separate form and an `<input type='hidden'>` gets updated for putting them in the database.
+
+<Picture
+	src='/blog/pictures/image-admin-3.png'
+	class='img-bg'
+	widths={[600]}
+	formats={["avif", "webp", "jpg"]}
+	alt='Layouts'
+	aspectRatio='390:400'
+	fit='cover'
+	style='max-width: 00px; margin: 0 auto; display: block;'
+/>
+
+The other content also has platforms which can be added and removed with the help of the platforms page.
+
+<Picture
+	src='/blog/pictures/image-admin-4.png'
+	class='img-bg'
+	widths={[600]}
+	formats={["avif", "webp", "jpg"]}
+	alt='Layouts'
+	aspectRatio='482:400'
+	fit='cover'
+	style='max-width: 400px; margin: 0 auto; display: block;'
+/>
+
+I also create a rich TextArea myself. This was a mini project in of itself. I used the javascript `execCommand()` API to create all the functions of the TextArea. I created an content editable `<iframe>` and executed all the commands in it, at the end parsed the HTML inside the iframe using the following code:
+
+```js
+// Grab the form and add an event listener to it to listen for its submission
+document.querySelector("form").addEventListener("submit", (e) => {
+	// Grab the textarea
+	const inputtext = document.querySelector(".inputText");
+	// Prevent the form from getting submitted
+	e.preventDefault();
+	// add the HTML to the textarea
+	inputtext.value = "";
+	inputtext.value = doc.body.innerHTML;
+	// submit the form
+	document.getElementById("other-form").submit();
+});
+```
+
+One challenge that I faced when making the platforms page is that, there is HTML code in the database and I wanted to display the images. The path in the `<img>` tag is relative to the otherContent.php page which is in the parent folder. I wrote the following function in JavaScript to counter that.
+
+```js
+const changePaths = () => {
+	// get the path for the platform image tag
+	const platformImg = document.querySelectorAll(".platformimg");
+	// loop through all platform img tags
+	platformImg.forEach((img) => {
+		const src = img.getAttribute("src");
+		// Create the new source
+		const newSrc = "../" + src;
+		// Set the new source
+		img.setAttribute("src", newSrc);
+	});
+};
+```
+
+`<iframe>` and executed all the commands in it, at the end parsed the HTML inside the I also added a hit counter. For duplicate counts I created a session variable and if that exists, it will not count hits. Got the code from this [stack overflow article](https://stackoverflow.com/questions/18959592/php-only-hit-counter).
+
+```php
+function countHits() {
+    session_start();
+    if(empty($_SESSION['visited'])){
+        $counter = file_get_contents('./hits.txt') + 1;
+        file_put_contents('./hits.txt', $counter);
+    }
+    $_SESSION['visited'] = true;
+}
+```
+
+For the feedback page, I'm just putting user feedback in the database and presenting it in the admin page as cards.
+
+// image http://virajshukla.com/otherImages/bIMG_5195.PNG
+
+Overall it was a big project but it was fun to do and I learned a lot from it as well.
