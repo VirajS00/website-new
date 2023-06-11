@@ -1,0 +1,12 @@
+---
+const props = Astro.props;
+---
+
+<h2 {...props}><slot /></h2>
+
+<style>
+    h2 {
+        color: rgb(80, 192, 240);
+        font-size: 1.5rem;
+    }
+</style>
