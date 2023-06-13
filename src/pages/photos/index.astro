@@ -1,6 +1,59 @@
 ---
 import BasrLayout from "../../layouts/base-layout.astro";
-import { Picture } from "@astrojs/image/components";
+import { getPicture } from "@astrojs/image";
+import { PhotosGrid } from "../../components/general/photos-grid";
+import { arrayPattern } from "../../helpers/array-pattern";
+
+const picturesSrc = [
+    {
+        img_id: 1,
+        img_path:
+            "https://c1.staticflickr.com/5/4186/33765519373_e58db97649_c.jpg",
+        categ_id: 1,
+        category: "Abstract",
+        caption: "backlit cellular",
+    },
+    {
+        img_id: 2,
+        img_path:
+            "https://res.cloudinary.com/dk61arwer/image/upload/v1686597505/photos/175268847_yqcwpf.jpg",
+        categ_id: 1,
+        category: "Abstract",
+        caption: "backlit cellular",
+    },
+    {
+        img_id: 3,
+        img_path:
+            "https://live.staticflickr.com/65535/49662124336_b6d0a49070_c.jpg",
+        categ_id: 1,
+        category: "Abstract",
+        caption: "backlit cellular",
+    },
+    {
+        img_id: 4,
+        img_path:
+            "https://farm5.staticflickr.com/4808/44897301895_3052c97eea_c.jpg",
+        categ_id: 1,
+        category: "Abstract",
+        caption: "backlit cellular",
+    },
+];
+
+const picturesPromise = picturesSrc.map(async (pic) => {
+    return await getPicture({
+        alt: pic.caption,
+        formats: ["avif", "webp", "jpg"],
+        src: pic.img_path,
+        widths: [800],
+        aspectRatio: "3:2",
+        fit: "cover",
+    });
+});
+
+const pics = await Promise.all(picturesPromise);
+
+const randommizer = [1, 2, 1];
+const randomVals = arrayPattern(pics.length, randommizer);
 ---
 
 <BasrLayout title='Photos'>
@@ -11,19 +64,7 @@ import { Picture } from "@astrojs/image/components";
 				{FilmCategories[cat as never]}
 			</Dropdown> -->
         </div>
-        <div class='images-container'>
-            <div class='img-cont'>
-                <a href=''>
-                    <Picture
-                        src='https://c1.staticflickr.com/1/322/31905679860_142bd93e5a_n.jpg'
-                        alt='ddd'
-                        widths={[500]}
-                        aspectRatio='3:2'
-                    />
-                    <div class='image-details'>ojdjdooj</div>
-                </a>
-            </div>
-        </div>
+        <PhotosGrid pics={pics} randomVals={randomVals} client:load />
     </div>
 </BasrLayout>
 
@@ -32,6 +73,8 @@ import { Picture } from "@astrojs/image/components";
         max-width: 1300px;
         padding: 2rem;
         margin: 0 auto;
+        padding-top: 100px;
+        padding-bottom: 0;
 
         h1 {
             margin: 0;
@@ -45,44 +88,6 @@ import { Picture } from "@astrojs/image/components";
             justify-content: space-between;
             margin-block-end: 0;
             padding-block: 1.5em;
-        }
-    }
-
-    .images-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-        max-width: 1300px;
-        padding: 2rem;
-        margin: 0 auto;
-    }
-
-    .img-cont {
-        position: relative;
-        height: 300px;
-        object-fit: cover;
-        overflow: hidden;
-        border-radius: 0.5em;
-
-        img {
-            position: absolute;
-            height: 100%;
-            width: 100%;
-        }
-
-        .image-details {
-            position: absolute;
-            height: 100%;
-            width: 100%;
-            background-color: rgb(0 0 0 / 0.6);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 250ms ease;
-            padding: 1em;
-        }
-
-        &:hover .image-details {
-            opacity: 1;
-            pointer-events: fill;
         }
     }
 </style>
