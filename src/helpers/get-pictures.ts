@@ -57,7 +57,7 @@ export const getCategories = async () => {
 	const categArray = [...new Set(allCategArray)];
 
 	return [
-		...categArray.map((x) => ({ displayName: x, category: x.toLowerCase() })),
 		{ displayName: "All", category: "all" },
+		...categArray.map((x) => ({ displayName: x, category: x.toLowerCase() })),
 	];
 };
