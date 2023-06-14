@@ -3,6 +3,7 @@ import { For, type Component } from "solid-js";
 
 type Props = {
 	picture: GetPictureResult;
+	fit?: "cover" | "contain";
 };
 
 export const Picture: Component<Props> = (props) => {
@@ -12,7 +13,10 @@ export const Picture: Component<Props> = (props) => {
 				{(pic) => <source type={pic.type} srcset={pic.srcset} />}
 			</For>
 			{/* @ts-ignore */}
-			<img {...props.picture.image} style='object-fit: cover;' />
+			<img
+				{...props.picture.image}
+				style={`object-fit: ${props.fit || "cover"};`}
+			/>
 		</picture>
 	);
 };

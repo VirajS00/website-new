@@ -29,7 +29,9 @@ const { menuItems } = Astro.props;
 								(item.link.startsWith("/films") &&
 									currentPath.startsWith("/films")) ||
 								(item.link.startsWith("/blog") &&
-									currentPath.startsWith("/blog")),
+									currentPath.startsWith("/blog")) ||
+								(item.link.startsWith("/photos") &&
+									currentPath.startsWith("/photos")),
 						})}>
 						<a href={item.link}>{item.label}</a>
 					</li>

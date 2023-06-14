@@ -10,11 +10,11 @@ import {
 	createEffect,
 } from "solid-js";
 import styles from "./photos-grid.module.scss";
-import type { GetPictureResult } from "@astrojs/image/dist/lib/get-picture";
 import { Picture } from "./picture";
+import type { Picture as PictureType } from "../../../types/pictures";
 
 interface Props {
-	pics: GetPictureResult[];
+	pics: PictureType[];
 	randomVals: number[];
 }
 
@@ -22,12 +22,29 @@ export const PhotosGrid: Component<Props> = (props) => {
 	const [selectedIndex, setSelectedIndex] = createSignal<number | undefined>(
 		undefined
 	);
-	const [pending, start] = useTransition();
+
+	let imgCont: HTMLDivElement | undefined;
+
+	const selectImage = (index: number) => setSelectedIndex(index);
 
 	onMount(() => {
 		document.addEventListener("keyup", (e) => {
 			if (e.key === "Escape") {
 				setSelectedIndex(undefined);
+			}
+
+			if (e.key === "ArrowRight") {
+				setSelectedIndex((x) => {
+					if (x === undefined) return;
+					return x + 1;
+				});
+			}
+
+			if (e.key === "ArrowLeft") {
+				setSelectedIndex((x) => {
+					if (x === undefined) return;
+					return x - 1;
+				});
 			}
 		});
 	});
@@ -40,7 +57,34 @@ export const PhotosGrid: Component<Props> = (props) => {
 		}
 	});
 
-	const selectImage = (index: number) => start(() => setSelectedIndex(index));
+	const onContainerMouseMove = (e: MouseEvent) => {
+		if (!imgCont) return;
+		const widthHalf = imgCont.clientWidth / 2;
+
+		if (e.clientX > widthHalf) {
+			imgCont.style.cursor = "url(/cursor/right.png), e-resize";
+		} else {
+			imgCont.style.cursor = "url(/cursor/left.png), w-resize";
+		}
+	};
+
+	const onContainerClick = (e: MouseEvent) => {
+		if (!imgCont) return;
+
+		const widthHalf = imgCont.clientWidth / 2;
+
+		if (e.clientX > widthHalf) {
+			setSelectedIndex((x) => {
+				if (x === undefined) return;
+				return x + 1;
+			});
+		} else {
+			setSelectedIndex((x) => {
+				if (x === undefined) return;
+				return x - 1;
+			});
+		}
+	};
 
 	return (
 		<>
@@ -57,21 +101,29 @@ export const PhotosGrid: Component<Props> = (props) => {
 				</For>
 			</div>
 			<div>
-				<Suspense fallback={<div class='loader'>Loading...</div>}>
-					<Switch>
-						<For each={props.pics}>
-							{(pic, i) => (
-								<Match when={selectedIndex() === i()}>
-									<div
-										class={styles.fullScreenImageContainer}
-										classList={{ [styles.selected]: selectedIndex() === i() }}>
-										<Picture picture={pic} />
+				<Switch>
+					<For each={props.pics}>
+						{(pic, i) => (
+							<Match when={selectedIndex() === i()}>
+								<div
+									class={styles.fullScreenImageContainer}
+									onmousemove={onContainerMouseMove}
+									onclick={onContainerClick}
+									ref={imgCont}>
+									<div class={styles.imageCont}>
+										<button
+											class={styles.button}
+											onclick={() => setSelectedIndex(undefined)}>
+											&times;
+										</button>
+										<Picture picture={pic} fit='contain' />
+										<div class={styles.caption}>{pic.meta.caption}</div>
 									</div>
-								</Match>
-							)}
-						</For>
-					</Switch>
-				</Suspense>
+								</div>
+							</Match>
+						)}
+					</For>
+				</Switch>
 			</div>
 		</>
 	);
