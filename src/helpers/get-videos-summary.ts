@@ -1,5 +1,6 @@
 import type { FilmsTableReturnType } from "../types/films-db-return-type";
 import type { YoutubeApiResponseType } from "../types/youtube-api-response";
+import { getAspectRatio } from "./get-aspect-ratio";
 import { getData } from "./get-data";
 import Autolinker from "autolinker";
 
@@ -78,6 +79,10 @@ type FilmDetailsReturnType = {
 	role: string;
 	category: string;
 	year: string;
+	images?: {
+		aspectRatio: number;
+		imageUrl: string;
+	}[];
 };
 
 export const getVideoDetails = async (
@@ -97,7 +102,7 @@ export const getVideoDetails = async (
 
 	const ytData = (await res.json()) as YoutubeApiResponseType;
 
-	return dbData.map((x) => {
+	return dbData.map(async (x) => {
 		const filmYt = ytData.items.find(
 			(y) => y.snippet.resourceId.videoId === x.film_id
 		);
@@ -105,6 +110,14 @@ export const getVideoDetails = async (
 		const autolinker = new Autolinker({
 			newWindow: true,
 			className: "film-desc-link",
+		});
+
+		const images = (x.images ?? []).map(async (x) => {
+			const { aspectRatio } = await getAspectRatio(x);
+			return {
+				aspectRatio: aspectRatio,
+				imageUrl: x,
+			};
 		});
 
 		return {
@@ -116,6 +129,7 @@ export const getVideoDetails = async (
 			role: x.my_role,
 			category: x.category,
 			year: x.year,
+			images: await Promise.all(images),
 		};
 	})[0];
 };

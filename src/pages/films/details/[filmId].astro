@@ -1,4 +1,5 @@
 ---
+import { Picture } from "@astrojs/image/components";
 import {
 	getVideoIds,
 	getVideoDetails,
@@ -46,6 +47,26 @@ const filmDetails = await getVideoDetails(filmId);
 			</div>
 			<button class='show-more'>Show More</button>
 		</div>
+		{
+			filmDetails.images && filmDetails.images.length > 0 && (
+				<div class='film-images'>
+					<h2 class='stills-title'>Film Stills</h2>
+					<div class='images-conatiner'>
+						{filmDetails.images.map((image) => (
+							<Picture
+								src={image.imageUrl}
+								class='img-still'
+								widths={[1000]}
+								formats={["avif", "webp", "jpg"]}
+								alt={filmDetails.title ?? ""}
+								aspectRatio={image.aspectRatio}
+								fit='contain'
+							/>
+						))}
+					</div>
+				</div>
+			)
+		}
 	</div>
 </BaseLayout>
 
@@ -178,5 +199,30 @@ const filmDetails = await getVideoDetails(filmId);
 		color: #878787;
 		margin-block-end: 0.8rem;
 		font-size: 1.05rem;
+	}
+
+	.film-images {
+		margin-top: 3rem;
+		width: 100%;
+		max-width: 1000px;
+		padding-inline: 2rem;
+
+		.stills-title {
+			font-size: 1.7rem;
+		}
+
+		.images-conatiner {
+			display: flex;
+			flex-direction: column;
+			gap: 2em;
+
+			img {
+				box-shadow: 0 0 10px 0 #fff;
+			}
+		}
+
+		@media screen and (min-width: 800px) {
+			padding-inline: 0;
+		}
 	}
 </style>

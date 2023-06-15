@@ -1,18 +1,11 @@
 import type { Picture, PictureDbResponse } from "../types/pictures";
+import { getAspectRatio } from "./get-aspect-ratio";
 import { getData } from "./get-data";
 import { getPicture } from "@astrojs/image";
-// @ts-ignore
-import ExifParser from "exif-parser";
 
 export const convertPictures = async (picturesSrc: PictureDbResponse[]) => {
 	const picturesPromise: Promise<Picture>[] = picturesSrc.map(async (pic) => {
-		const rawPic = await fetch(pic.img_path);
-		const a = await rawPic.blob();
-		const buffer = await a.arrayBuffer();
-
-		const parser = ExifParser.create(buffer);
-		const imageTags = parser.parse().imageSize;
-		const aspectRatio = parseInt(imageTags.width) / parseInt(imageTags.height);
+		const { aspectRatio, imageTags } = await getAspectRatio(pic.img_path);
 
 		const pics = await getPicture({
 			alt: pic.caption,
