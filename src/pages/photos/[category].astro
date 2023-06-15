@@ -6,10 +6,18 @@ import { getCategories, getPictures } from "../../helpers/get-pictures";
 import Dropdown from "../../components/general/dropdown.astro";
 import type { MenuItem } from "../../types/menu-item";
 
+interface Props {
+    categories: {
+        displayName: string;
+        category: string;
+    }[];
+}
+
 export const getStaticPaths = async () => {
     const categories = await getCategories();
     return categories.map((x) => ({
         params: { category: x.category },
+        props: { categories },
     }));
 };
 
@@ -21,7 +29,7 @@ const pics = await getPictures(cat ?? "");
 
 const randomVals = arrayPattern(pics.length, randommizer);
 
-const categories = await getCategories();
+const { categories } = Astro.props;
 
 const dropdownItems: MenuItem[] = categories.map((c) => ({
     label: c.displayName,

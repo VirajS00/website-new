@@ -23,7 +23,7 @@ export const convertPictures = async (picturesSrc: PictureDbResponse[]) => {
 			fit: "cover",
 		});
 
-		return { ...pics, meta: pic };
+		return { ...pics, meta: pic, dimentions: { ...imageTags, aspectRatio } };
 	});
 
 	const pics = await Promise.all(picturesPromise);

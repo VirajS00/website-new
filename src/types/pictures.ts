@@ -7,6 +7,11 @@ export type Picture = {
 		type: string;
 		srcset: string;
 	}[];
+	dimentions: {
+		height: number;
+		width: number;
+		aspectRatio: number;
+	};
 };
 
 export type PictureSrcType = {
