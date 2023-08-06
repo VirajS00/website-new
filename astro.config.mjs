@@ -3,6 +3,7 @@ import image from "@astrojs/image";
 import mdx from "@astrojs/mdx";
 
 import solidJs from "@astrojs/solid-js";
+import codeTitles from "remark-code-titles";
 
 // https://astro.build/config
 export default defineConfig({
@@ -11,5 +12,7 @@ export default defineConfig({
 		shikiConfig: {
 			theme: "material-theme-darker",
 		},
+		remarkPlugins: [codeTitles],
 	},
+	compressHTML: true,
 });

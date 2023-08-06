@@ -2,10 +2,8 @@ import {
 	For,
 	type Component,
 	createSignal,
-	Suspense,
 	Switch,
 	Match,
-	useTransition,
 	onMount,
 	createEffect,
 } from "solid-js";
