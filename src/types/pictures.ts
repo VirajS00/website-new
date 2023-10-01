@@ -8,8 +8,8 @@ export type Picture = {
 		srcset: string;
 	}[];
 	dimentions: {
-		height: number;
-		width: number;
+		height?: number;
+		width?: number;
 		aspectRatio: number;
 	};
 };

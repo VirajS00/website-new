@@ -1,19 +1,22 @@
-// @ts-ignore
-import ExifParser from "exif-parser";
+import { ExifParserFactory } from "ts-exif-parser";
 
 export const getAspectRatio = async (
 	picUrl: string
 ): Promise<{
-	imageTags: { height: number; width: number };
+	imageTags?: { height?: number; width?: number };
 	aspectRatio: number;
 }> => {
 	const rawPic = await fetch(picUrl);
 	const a = await rawPic.blob();
 	const buffer = await a.arrayBuffer();
 
-	const parser = ExifParser.create(buffer);
-	const imageTags = parser.parse().imageSize;
-	const aspectRatio = parseInt(imageTags.width) / parseInt(imageTags.height);
+	const parser = ExifParserFactory.create(buffer);
+
+	const parsed = parser.parse();
+
+	const imageTags = parsed.imageSize;
+
+	const aspectRatio = (imageTags?.width ?? 3) / (imageTags?.height ?? 2);
 
 	return {
 		imageTags,
