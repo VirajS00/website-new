@@ -5,6 +5,7 @@ interface Props {
 	gradientColor2?: string;
 	height: number;
 	link: string;
+	newTab?: boolean;
 }
 
 const {
@@ -13,6 +14,7 @@ const {
 	gradientColor2 = "#8593ff",
 	height = 400,
 	link,
+	newTab,
 } = Astro.props;
 ---
 
@@ -24,7 +26,11 @@ const {
 	<div class='card-border-gradient' aria-hidden='true'></div>
 	<div class='card-bg' aria-hidden='true'></div>
 	<div class='card-content'>
-		<a href={link}>
+		<a
+			href={link}
+			target={newTab ? "_blank" : ""}
+			rel={newTab ? "noopener noreferrer" : ""}
+		>
 			<slot />
 		</a>
 	</div>

@@ -12,6 +12,7 @@ interface Props {
 	height?: number;
 	imageFit?: "cover" | "contain" | "fill" | "inside" | "outside";
 	imageType?: "astro-image" | "html-image";
+	newTab?: boolean;
 }
 
 const {
@@ -24,6 +25,7 @@ const {
 	height = 420,
 	imageFit = "cover",
 	imageType = "astro-image",
+	newTab = false,
 } = Astro.props;
 ---
 
@@ -32,6 +34,7 @@ const {
 	gradientColor1={gradientColor1}
 	link={link}
 	height={height}
+	newTab={newTab}
 >
 	<div class='explore-card'>
 		<div class='img-cont' aria-hidden='true'>
