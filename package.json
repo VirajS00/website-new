@@ -19,14 +19,14 @@
 		"autolinker": "4.0.0",
 		"classnames": "2.3.2",
 		"mysql2": "3.3.3",
+		"remark-code-titles": "0.1.2",
 		"solid-js": "^1.4.3",
-		"exif-parser": "0.1.12",
-		"remark-code-titles": "0.1.2"
+		"ts-exif-parser": "^0.2.2"
 	},
 	"devDependencies": {
 		"autoprefixer": "10.4.14",
 		"cssnano": "6.0.1",
 		"sass": "1.62.1",
-		"sharp": "0.32.1"
+		"sharp": "0.30.4"
 	}
 }
