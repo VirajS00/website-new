@@ -31,7 +31,9 @@ const { menuItems } = Astro.props;
 								(item.link.startsWith("/blog") &&
 									currentPath.startsWith("/blog")) ||
 								(item.link.startsWith("/photos") &&
-									currentPath.startsWith("/photos")),
+									currentPath.startsWith("/photos")) ||
+								(item.link.startsWith("/coding-design") &&
+									currentPath.startsWith("/coding-design")),
 						})}>
 						<a href={item.link}>{item.label}</a>
 					</li>
