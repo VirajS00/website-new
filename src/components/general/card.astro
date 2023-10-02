@@ -4,7 +4,7 @@ interface Props {
 	gradientColor1?: string;
 	gradientColor2?: string;
 	height: number;
-	link: string;
+	link?: string;
 	newTab?: boolean;
 }
 
@@ -26,13 +26,21 @@ const {
 	<div class='card-border-gradient' aria-hidden='true'></div>
 	<div class='card-bg' aria-hidden='true'></div>
 	<div class='card-content'>
-		<a
-			href={link}
-			target={newTab ? "_blank" : ""}
-			rel={newTab ? "noopener noreferrer" : ""}
-		>
-			<slot />
-		</a>
+		{
+			link ? (
+				<a
+					href={link}
+					target={newTab ? "_blank" : ""}
+					rel={newTab ? "noopener noreferrer" : ""}
+					class='link'>
+					<slot />
+				</a>
+			) : (
+				<div class='link'>
+					<slot />
+				</div>
+			)
+		}
 	</div>
 </div>
 
@@ -71,7 +79,7 @@ const {
 			-webkit-backdrop-filter: blur(50px);
 			backdrop-filter: blur(50px);
 
-			a {
+			.link {
 				text-decoration: none;
 				display: block;
 				position: absolute;

@@ -2,6 +2,7 @@
 import PictureCard from "../../components/general/picture-card.astro";
 import { getCodingDesign } from "../../helpers/get-coding-design";
 import BaseLayout from "../../layouts/base-layout.astro";
+import { Icon } from "astro-icon";
 
 const data = await getCodingDesign();
 ---
@@ -15,19 +16,42 @@ const data = await getCodingDesign();
 					<PictureCard
 						imageUrl={d.img.url}
 						imageAlt={d.title}
-						link={d.project_link}
 						height={500}
 						newTab
 						aspectRatio={d.img.aspectRatio}>
 						<div class='card-content'>
 							<div>
 								<h3 class='film-name'>{d.title}</h3>
-								<p class='film-desc'>{d.very_short_desc}</p>
+								<div>
+									<p>{d.very_short_desc}</p>
+									<div class='links'>
+										{d.github_link ? (
+											<a
+												href={d.github_link}
+												target='_blank'
+												title='Link to github'
+												class='link-a'
+												rel='noopener noreferrer'>
+												<Icon name='uil:github' size={35} />
+											</a>
+										) : null}
+										<a
+											href={d.project_link}
+											target='_blank'
+											title='Link to project'
+											class='link-a'
+											rel='noopener noreferrer'>
+											<Icon name='heroicons-solid:external-link' size={35} />
+										</a>
+									</div>
+								</div>
 							</div>
-							<div class='tags'>
-								{d.tools_used.map((x) => (
-									<div class='tag'>{x}</div>
-								))}
+							<div>
+								<div class='tags'>
+									{d.tools_used.map((x) => (
+										<div class='tag'>{x}</div>
+									))}
+								</div>
 							</div>
 						</div>
 					</PictureCard>
@@ -83,6 +107,22 @@ const data = await getCodingDesign();
 
 		@media screen and (min-width: 1200px) {
 			padding-inline: 0;
+		}
+	}
+
+	.links {
+		display: flex;
+		gap: 0.25em;
+	}
+
+	.link-a {
+		svg {
+			opacity: 0.85;
+			transition: opacity 150ms ease;
+		}
+
+		&:hover svg {
+			opacity: 1;
 		}
 	}
 </style>
