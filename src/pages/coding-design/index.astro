@@ -3,8 +3,19 @@ import PictureCard from "../../components/general/picture-card.astro";
 import { getCodingDesign } from "../../helpers/get-coding-design";
 import BaseLayout from "../../layouts/base-layout.astro";
 import { Icon } from "astro-icon";
+import { getCollection } from "astro:content";
 
 const data = await getCodingDesign();
+
+const blogArticles = await getCollection("blog");
+
+const articleData = blogArticles
+	.map((x) => ({
+		title: x.data.title,
+		project_id: x.data.project_id,
+		slug: x.slug,
+	}))
+	.filter((x) => x.project_id);
 ---
 
 <BaseLayout title="Viraj's Website">
@@ -29,16 +40,28 @@ const data = await getCodingDesign();
 											<a
 												href={d.github_link}
 												target='_blank'
-												title='Link to github'
+												title='Link to GitHub'
 												class='link-a'
 												rel='noopener noreferrer'>
 												<Icon name='uil:github' size={35} />
 											</a>
 										) : null}
+										{articleData.find((x) => x.project_id === d.id) && (
+											<a
+												href={`/blog/${
+													articleData.find((x) => x.project_id === d.id)?.slug
+												}`}
+												title={`Blog Article - ${
+													articleData.find((x) => x.project_id === d.id)?.title
+												}`}
+												class='link-a'>
+												<Icon name='ic:baseline-article' size={35} />
+											</a>
+										)}
 										<a
 											href={d.project_link}
 											target='_blank'
-											title='Link to project'
+											title='Link to Project'
 											class='link-a'
 											rel='noopener noreferrer'>
 											<Icon name='heroicons-solid:external-link' size={35} />
@@ -116,12 +139,36 @@ const data = await getCodingDesign();
 	}
 
 	.link-a {
+		position: relative;
 		svg {
-			opacity: 0.85;
+			opacity: 0.75;
 			transition: opacity 150ms ease;
 		}
 
 		&:hover svg {
+			opacity: 1;
+		}
+
+		&::after {
+			content: attr(title);
+			background-color: #161616;
+			color: #fff;
+			position: absolute;
+			left: 0;
+			bottom: calc(100% + 0.3em);
+			pointer-events: none;
+			opacity: 0;
+			width: max-content;
+			max-width: 12rem;
+			padding: 0.25em 0.5em;
+			border-radius: 0.5em;
+			box-shadow: 1px 2px 2px #fff;
+			border: 1px solid #313131;
+			transition: opacity 150ms ease;
+		}
+
+		&:hover::after,
+		&:focus-visible::after {
 			opacity: 1;
 		}
 	}

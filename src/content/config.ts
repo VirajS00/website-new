@@ -7,6 +7,7 @@ const blogCollection = defineCollection({
 		thumbnail: z.string(),
 		image: z.string(),
 		tags: z.array(z.string()),
+		project_id: z.number().optional().nullable(),
 	}),
 });
 
