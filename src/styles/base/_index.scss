@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;500;600;700&display=swap");
 
 * {
     box-sizing: border-box;
@@ -10,7 +10,7 @@ html {
 }
 
 body {
-    font-family: 'Kumbh Sans', sans-serif;
+    font-family: "Kumbh Sans", sans-serif;
     background-color: #000;
     color: #fff;
     margin: 0;
@@ -37,6 +37,11 @@ body {
             background-color: #7c7c7c;
         }
     }
+}
+
+::selection {
+    color: #69472f;
+    background-color: #ffd3aa;
 }
 
 img,
