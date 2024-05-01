@@ -99,15 +99,18 @@ if (catName === "all") {
 	.content {
 		padding-block-start: 80px;
 		padding-block-end: 150px;
-		padding-inline: 1.7em;
 		max-width: 1600px;
 		margin: 0 auto;
 	}
 
 	.title-container {
 		max-width: 1200px;
-		padding: 2rem;
+		padding: 1rem;
 		margin-inline: auto;
+
+		@media screen and (min-width: 768px) {
+			padding: 2rem;
+		}
 
 		h1 {
 			margin: 0;
