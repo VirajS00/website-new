@@ -1,8 +1,7 @@
-import type { FilmsTableReturnType } from "../types/films-db-return-type";
 import type { YoutubeApiResponseType } from "../types/youtube-api-response";
-import { getAspectRatio } from "./get-aspect-ratio";
-import { getData } from "./get-data";
+import Films from "../../data/films.json";
 import Autolinker from "autolinker";
+import { sortArrayByNestedKey } from "./sort-array-by-key";
 
 type VideSummary = {
 	title: string;
@@ -26,51 +25,43 @@ export const getVideoSummary = async (
 
 	const ytData = (await res.json()) as YoutubeApiResponseType;
 
-	const dbData = (await getData(
-		"SELECT * FROM films ORDER BY sort_order ASC"
-	)) as FilmsTableReturnType[];
-
-	const returnValue: VideSummary[] = dbData.map((x) => {
-		const videoId = x.film_id;
+	const returnValue: VideSummary[] = Films.data.map((film) => {
+		const videoId = film.film_id;
 
 		const ytDataFilm = ytData.items.find(
 			(x) => x.snippet.resourceId.videoId === videoId
 		);
 
 		return {
-			category: x.category,
-			short_description: x.film_short_description,
+			category: film.category,
+			short_description: film.film_short_description,
 			thumbnail: ytDataFilm?.snippet.thumbnails.high.url ?? "",
 			title: ytDataFilm?.snippet.title ?? "",
 			videoId: videoId,
-			year: x.year,
+			year: film.year,
+			sort_order: film.sort_order,
 		};
 	});
 
 	if (category === "all") {
-		return returnValue;
+		return sortArrayByNestedKey(returnValue, "sort_order");
 	} else {
-		return returnValue.filter((x) => x.category === category);
+		return sortArrayByNestedKey(
+			returnValue.filter((x) => x.category === category),
+			"sort_order"
+		);
 	}
 };
 
 export const getCurrentCategories = async (): Promise<string[]> => {
-	const dbData = (await getData("SELECT category FROM films")) as {
-		category: string;
-	}[];
-
-	const categories = ["all", ...new Set(dbData.map((x) => x.category))];
+	const cat = new Set(Films.data.map((x) => x.category));
+	const categories = ["all", ...Array.from(cat)];
 
 	return categories;
 };
 
-export const getVideoIds = async (): Promise<string[]> => {
-	const dbData = (await getData("SELECT film_id FROM films")) as {
-		film_id: string;
-	}[];
-
-	return dbData.map((x) => x.film_id);
-};
+export const getVideoIds = async (): Promise<string[]> =>
+	Films.data.map((x) => x.film_id);
 
 type FilmDetailsReturnType = {
 	video_id: string;
@@ -80,7 +71,6 @@ type FilmDetailsReturnType = {
 	category: string;
 	year: string;
 	images?: {
-		aspectRatio: number;
 		imageUrl: string;
 	}[];
 };
@@ -88,10 +78,6 @@ type FilmDetailsReturnType = {
 export const getVideoDetails = async (
 	filmId?: string
 ): Promise<FilmDetailsReturnType> => {
-	const dbData = (await getData(
-		`SELECT * FROM films WHERE film_id = '${filmId}'`
-	)) as FilmsTableReturnType[];
-
 	const url = import.meta.env.YOUTUBE_API_URL;
 
 	const res = await fetch(url, {
@@ -102,34 +88,32 @@ export const getVideoDetails = async (
 
 	const ytData = (await res.json()) as YoutubeApiResponseType;
 
-	return dbData.map(async (x) => {
-		const filmYt = ytData.items.find(
-			(y) => y.snippet.resourceId.videoId === x.film_id
-		);
+	const fd = Films.data.find((x) => x.film_id === filmId);
 
-		const autolinker = new Autolinker({
-			newWindow: true,
-			className: "film-desc-link",
-		});
+	const filmYt = ytData.items.find(
+		(y) => y.snippet.resourceId.videoId === fd?.film_id
+	);
 
-		const images = (x.images ?? []).map(async (x) => {
-			const { aspectRatio } = await getAspectRatio(x);
-			return {
-				aspectRatio: aspectRatio,
-				imageUrl: x,
-			};
-		});
+	const autolinker = new Autolinker({
+		newWindow: true,
+		className: "film-desc-link",
+	});
 
+	const images = fd?.images.map((x) => {
 		return {
-			video_id: x.film_id,
-			title: filmYt?.snippet.title,
-			description: autolinker.link(
-				filmYt?.snippet.description.replace(/(?:\r\n|\r|\n)/g, "<br>") ?? ""
-			),
-			role: x.my_role,
-			category: x.category,
-			year: x.year,
-			images: await Promise.all(images),
+			imageUrl: x,
 		};
-	})[0];
+	});
+
+	return {
+		video_id: fd?.film_id ?? "",
+		title: filmYt?.snippet.title,
+		description: autolinker.link(
+			filmYt?.snippet.description.replace(/(?:\r\n|\r|\n)/g, "<br>") ?? ""
+		),
+		role: fd?.my_role ?? "",
+		category: fd?.category ?? "",
+		year: fd?.year ?? "",
+		images,
+	};
 };

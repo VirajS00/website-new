@@ -1,8 +1,6 @@
-import type { ImgHTMLAttributes } from "@astrojs/image/components";
-
 export type Picture = {
 	meta: PictureDbResponse;
-	image: ImgHTMLAttributes;
+	image: any;
 	sources: {
 		type: string;
 		srcset: string;

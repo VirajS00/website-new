@@ -1,7 +1,15 @@
 ---
-import { CollectionEntry, getCollection, getEntryBySlug } from "astro:content";
+import {
+	type CollectionEntry,
+	getCollection,
+	getEntryBySlug,
+} from "astro:content";
 import BaseLayout from "../../layouts/base-layout.astro";
-import { Picture } from "@astrojs/image/components";
+import MdImage from "../../components/markdown-components/md-image.astro";
+import AnchorElement from "../../components/markdown-components/anchor-element.astro";
+import H2 from "../../components/markdown-components/h2.astro";
+import { getImage } from "astro:assets";
+import SizeOf from "image-size";
 
 interface Props {
 	entry: CollectionEntry<"blog">;
@@ -20,25 +28,32 @@ const { slug } = Astro.params;
 
 const { Content } = await ent.render();
 const entry = await getEntryBySlug("blog", slug as any);
+
+const dimentions = SizeOf(`public/blog/${entry?.data.image}`);
+
+const image = await getImage({
+	src: `/blog/${entry?.data.image}`,
+	height: dimentions.height,
+	width: dimentions.width,
+	format: "avif",
+});
 ---
 
 <BaseLayout title={entry?.data.title ?? ""}>
 	<div class='content'>
 		<div class='inner-content'>
+			<h1>{entry?.data.title}</h1>
 			<div class='img-cont'>
-				<Picture
-					src={`/blog/${entry?.data.image}`}
+				<img
+					src={image.src}
 					alt={entry?.data.title ?? ""}
-					widths={[500]}
-					aspectRatio='1:1'
-					formats={["avif", "webp", "jpg"]}
+					width={image.attributes.width}
+					height={image.attributes.height}
 					loading='eager'
+					style={{ height: "auto", width: "100%" }}
 				/>
 			</div>
-			<div>
-				<h1>{entry?.data.title}</h1>
-				<Content />
-			</div>
+			<Content components={{ img: MdImage, a: AnchorElement, h2: H2 }} />
 		</div>
 	</div>
 </BaseLayout>
@@ -56,31 +71,27 @@ const entry = await getEntryBySlug("blog", slug as any);
 	}
 
 	h1 {
+		text-align: center;
+
 		@media screen and (min-width: 800px) {
 			margin-block-start: 0;
 		}
 	}
 
 	.img-cont {
-		@media screen and (min-width: 800px) {
-			position: sticky;
-			top: 1rem;
-			margin-inline-start: 1rem;
-			height: calc(100vh - 100px);
+		text-align: center;
+
+		img {
+			max-width: 500px;
 		}
 	}
 
 	.inner-content {
-		max-width: 1200px;
+		max-width: 80ch;
 		margin: 0 auto;
 
 		@media screen and (min-width: 800px) {
-			display: grid;
-			grid-template-columns: 400px 1fr;
-			gap: 1.5rem;
-
 			div {
-				padding-inline: 2rem;
 				font-size: 0.875rem;
 
 				h1 {

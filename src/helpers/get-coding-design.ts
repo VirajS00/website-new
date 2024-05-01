@@ -1,23 +1,19 @@
-import type { CodingData, CodingDataRaw } from "../types/coding-used";
-import { getAspectRatio } from "./get-aspect-ratio";
-import { getData } from "./get-data";
+import type { CodingData } from "../types/coding-used";
+import CodingDesign from "../../data/coding_design.json";
 
-export const getCodingDesign = async (): Promise<CodingData[]> => {
-	const dbData = (await getData(
-		"SELECT * FROM coding_design ORDER BY id ASC"
-	)) as CodingDataRaw[];
+export const getCodingDesign = (): CodingData[] => {
+	const data = CodingDesign.data;
 
 	let picDataRet = [];
 
-	for (let i = 0; i < dbData.length; i++) {
+	for (let i = 0; i < data.length; i++) {
 		const picData = {
-			url: dbData[i].img,
-			...(await getAspectRatio(dbData[i].img)),
+			url: data[i].img,
 		};
 
 		picDataRet.push({
-			...dbData[i],
-			tools_used: dbData[i].tools_used.split(","),
+			...data[i],
+			tools_used: data[i].tools_used,
 			img: picData,
 		});
 	}

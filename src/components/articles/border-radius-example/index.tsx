@@ -1,23 +1,17 @@
-import { createSignal, type Component, createEffect } from "solid-js";
+import { component$, useSignal } from "@builder.io/qwik";
 import styles from "./border-radius.module.scss";
 
-export const BorderRadiusExample: Component = () => {
-	const [rangeValue, setRangeValue] = createSignal(10);
-	const [unit, setUnit] = createSignal<"px" | "percent">("px");
-	let borderRadiusEl: HTMLDivElement | undefined;
-
-	createEffect(() => {
-		if (!borderRadiusEl) return;
-
-		borderRadiusEl.style.setProperty(
-			"--border-radius",
-			`${rangeValue()}${unit() === "px" ? "px" : "%"}`
-		);
-	});
+export const BorderRadiusExample = component$(() => {
+	const rangeValue = useSignal<number>(10);
+	const unit = useSignal<"px" | "percent">("px");
 
 	return (
 		<div class={`example-container ${styles.exampleContent}`}>
-			<div class={styles.borderRadiusContainer} ref={borderRadiusEl}>
+			<div
+				class={styles.borderRadiusContainer}
+				style={`--border-radius: ${rangeValue.value}${
+					unit.value === "px" ? "px" : "%"
+				}`}>
 				<div class={styles.borderRadiusExaple}></div>
 			</div>
 			<div class={styles.ControlsContainer}>
@@ -25,8 +19,8 @@ export const BorderRadiusExample: Component = () => {
 					type='range'
 					name='range-solid-gradient'
 					id='range-solid-gradient'
-					oninput={(e) => setRangeValue(parseInt(e.target.value))}
-					value={rangeValue()}
+					value={rangeValue.value}
+					onInput$={(e) => (rangeValue.value = (e as any).target.value)}
 					max={100}
 					min={10}
 					class='rangeInput'
@@ -37,8 +31,8 @@ export const BorderRadiusExample: Component = () => {
 				</label>
 				<div>
 					<p>
-						Border Radius: {rangeValue()}
-						{unit() === "px" ? "px" : "%"}
+						Border Radius: {rangeValue.value}
+						{unit.value === "px" ? "px" : "%"}
 					</p>
 					<div class={styles.buttonsContainer}>
 						<div>
@@ -47,7 +41,7 @@ export const BorderRadiusExample: Component = () => {
 								name='unit'
 								id='pixel'
 								value='px'
-								onclick={() => setUnit("px")}
+								onClick$={() => (unit.value = "px")}
 								checked
 								class={styles.hideInput}
 							/>
@@ -62,7 +56,7 @@ export const BorderRadiusExample: Component = () => {
 								name='unit'
 								id='percent'
 								value='percent'
-								onclick={() => setUnit("percent")}
+								onClick$={() => (unit.value = "percent")}
 								class={styles.hideInput}
 							/>
 							<label for='percent' class={styles.radioLabel}>
@@ -74,4 +68,4 @@ export const BorderRadiusExample: Component = () => {
 			</div>
 		</div>
 	);
-};
+});

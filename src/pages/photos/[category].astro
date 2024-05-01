@@ -1,74 +1,126 @@
 ---
-import BasrLayout from "../../layouts/base-layout.astro";
-import { PhotosGrid } from "../../components/general/photos-grid";
-import { arrayPattern } from "../../helpers/array-pattern";
-import { getCategories, getPictures } from "../../helpers/get-pictures";
+import Images from "../../../data/images.json";
+import { getImage } from "astro:assets";
+import BaseLayout from "../../layouts/base-layout.astro";
+import { ImagesGrid } from "../../components/general/images";
 import Dropdown from "../../components/general/dropdown.astro";
 import type { MenuItem } from "../../types/menu-item";
+import { makeArrayUnique } from "../../helpers/make-array-unique";
+import type { ImageType } from "../../types/image";
+import { sortArrayByNestedKey } from "../../helpers/sort-array-by-key";
 
-interface Props {
-    categories: {
-        displayName: string;
-        category: string;
-    }[];
-}
+export const getStaticPaths = () => {
+	const categories = Images.data.map((x) => ({
+		name: x.category,
+		id: x.categ_id,
+	}));
 
-export const getStaticPaths = async () => {
-    const categories = await getCategories();
-    return categories.map((x) => ({
-        params: { category: x.category },
-        props: { categories },
-    }));
+	const cat = makeArrayUnique(categories, "id");
+
+	const c = [
+		{ label: "All", category: "all" },
+		...cat.map((x) => {
+			return {
+				label: (x as any).name as string,
+				category: (x as any).name.toLowerCase() as string,
+			};
+		}),
+	];
+
+	return c.map((x) => ({
+		params: { category: x.category },
+		props: { categories: c },
+	}));
 };
 
-const { category: cat } = Astro.params;
-
-const randommizer = [1, 2, 1];
-
-const pics = await getPictures(cat ?? "");
-
-const randomVals = arrayPattern(pics.length, randommizer);
-
-const { categories } = Astro.props;
-
-const dropdownItems: MenuItem[] = categories.map((c) => ({
-    label: c.displayName,
-    link: `/photos/${c.category}`,
+const categories = Images.data.map((x) => ({
+	name: x.category,
+	id: x.categ_id,
 }));
+
+const cat = makeArrayUnique(categories, "id");
+
+const dropDownItems: MenuItem[] = [
+	{ label: "All", link: "all" },
+	...cat.map((x) => {
+		return {
+			label: (x as any).name,
+			link: `/photos/${(x as any).name.toLowerCase()}`,
+		};
+	}),
+];
+
+const { categories: c } = Astro.props;
+
+const { category: catName } = Astro.params;
+
+const processedImages: ImageType[] = [];
+
+for (let i = 0; i < Images.data.length; i++) {
+	const imageData = await getImage({
+		src: Images.data[i].img_path,
+		inferSize: true,
+		format: "avif",
+	});
+
+	const otherData = Images.data[i];
+
+	processedImages.push({ ...imageData, data: otherData });
+}
+
+let xFinalData: ImageType[] = [];
+let finalData: ImageType[] = [];
+
+if (catName === "all") {
+	xFinalData = sortArrayByNestedKey(processedImages, "data.sort");
+	finalData = xFinalData.map((x, i) => ({ ...x, index: i }));
+} else {
+	xFinalData = sortArrayByNestedKey(
+		processedImages.filter((x) => x.data.category.toLowerCase() === catName),
+		"data.sort"
+	);
+	finalData = xFinalData.map((x, i) => ({ ...x, index: i }));
+}
 ---
 
-<BasrLayout title='Photos'>
-    <div class='content'>
-        <div class='title-container'>
-            <h1 class='head'>Photos</h1>
-            <Dropdown dropdownItems={dropdownItems}>
-                {categories.find((x) => x.category === cat)?.displayName}
-            </Dropdown>
-        </div>
-        <PhotosGrid pics={pics} randomVals={randomVals} client:load />
-    </div>
-</BasrLayout>
+<BaseLayout title='Photos'>
+	<div class='content'>
+		<div class='title-container'>
+			<h1>Photos</h1>
+			<Dropdown dropdownItems={dropDownItems}>
+				{c.find((x) => x.category === catName)?.label}
+			</Dropdown>
+		</div>
+		<ImagesGrid images={finalData} />
+	</div>
+</BaseLayout>
 
-<style>
-    .title-container {
-        max-width: 1300px;
-        padding: 2rem;
-        margin: 0 auto;
-        margin-block-start: 100px;
-        padding-bottom: 0;
+<style lang='scss'>
+	.content {
+		padding-block-start: 80px;
+		padding-block-end: 150px;
+		padding-inline: 1.7em;
+		max-width: 1600px;
+		margin: 0 auto;
+	}
 
-        .head {
-            margin: 0;
-            margin-block-end: 1rem;
-            padding: 0;
-        }
+	.title-container {
+		max-width: 1200px;
+		padding: 2rem;
+		margin-inline: auto;
 
-        @media screen and (min-width: 600px) {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-block-end: 0;
-            padding-block: 1.5em;
-        }
-    }
+		h1 {
+			margin: 0;
+			margin-block-end: 1rem;
+			padding: 0;
+		}
+
+		@media screen and (min-width: 600px) {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-block-end: 0;
+			padding-block: 1.5em;
+		}
+	}
 </style>

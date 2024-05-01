@@ -1,5 +1,5 @@
 ---
-import { Icon } from "astro-icon";
+import { Icon } from "astro-icon/components";
 import classNames from "classnames";
 import type { MenuItem } from "../../types/menu-item";
 
@@ -15,7 +15,12 @@ const { dropdownItems } = Astro.props;
 <div class='container'>
 	<button class='dropdown-btn' aria-role='select'>
 		<slot />
-		<Icon name='mdi:arrow-down-drop' size={22} id='arrow-icon' />
+		<Icon
+			name='mdi:arrow-down-drop'
+			size={22}
+			id='arrow-icon'
+			class='arrow-icon'
+		/>
 	</button>
 	<ul class='list hide'>
 		{
@@ -132,7 +137,9 @@ const { dropdownItems } = Astro.props;
 			pointer-events: all;
 			transform: scale(1);
 			transform-origin: top right;
-			transition: opacity 150ms ease, transform 150ms ease;
+			transition:
+				opacity 150ms ease,
+				transform 150ms ease;
 
 			&::-webkit-scrollbar {
 				width: 0.5rem;
@@ -183,6 +190,10 @@ const { dropdownItems } = Astro.props;
 					}
 				}
 			}
+		}
+
+		.arrow-icon {
+			pointer-events: none;
 		}
 	}
 </style>

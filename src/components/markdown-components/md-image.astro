@@ -1,0 +1,36 @@
+---
+import { getImage } from "astro:assets";
+import SizeOf from "image-size";
+
+const props = Astro.props;
+
+const dimentions = SizeOf(`public/${props.src}`);
+
+const image = await getImage({
+	src: props.src,
+	height: dimentions.height,
+	width: dimentions.width,
+	format: "avif",
+});
+---
+
+<img
+	src={image.src}
+	alt={props.alt}
+	height={image.attributes.height}
+	width={image.attributes.width}
+	loading={image.attributes.loading}
+	decoding={image.attributes.decoding}
+	class='image'
+/>
+
+<style lang='scss'>
+	.image {
+		max-width: 600px;
+		width: 100%;
+		object-fit: contain;
+		display: block;
+		margin-inline: auto;
+		height: auto;
+	}
+</style>

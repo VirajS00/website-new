@@ -9,12 +9,6 @@ tags:
 project_id: 2
 ---
 
-import { Picture } from "@astrojs/image/components";
-import AnchorElement from "../../components/markdown-components/anchor-element.astro";
-import H2 from "../../components/markdown-components/h2.astro";
-
-export const components = { a: AnchorElement, h2: H2 };
-
 This was a very unique website design idea, we went through multiple iterations and decided that the desktop version of the website will flow horizontally. You can find a [link to the website](https://studio9491.com/) here.
 
 ## The Design
@@ -23,41 +17,17 @@ Making the website flow horizontally was a big challenge for responsiveness wher
 
 The design process went through multiple iterations and we finally came up with a design that worked.
 
-<Picture
-	src='/blog/pictures/studio1.png'
-	class='img-bg'
-	widths={[1000]}
-	formats={["avif", "webp", "jpg"]}
-	alt='Layouts'
-	aspectRatio='250:161'
-	fit='cover'
-/>
+![Layouts](/blog/pictures/studio1.png "Layouts")
 
 There is also an overlay on the homepage which was initially hand drawn and then traced in vector form.
 
 The rest of the site also flows horizontally on the desktop.
 
-<Picture
-	src='/blog/pictures/studio2.png'
-	class='img-bg'
-	widths={[1000]}
-	formats={["avif", "webp", "jpg"]}
-	alt='Layouts'
-	aspectRatio='250:147'
-	fit='cover'
-/>
+![Layouts](/blog/pictures/studio2.png "Layouts")
 
 The mobile layout was a challenge since we had to change the homepage graphic to accommodate for a vertical flow. The whole site changes to flow vertically on a smaller screen.
 
-<Picture
-	src='/blog/pictures/studio3.png'
-	class='img-bg'
-	widths={[1000]}
-	formats={["avif", "webp", "jpg"]}
-	alt='Layouts'
-	aspectRatio='250:147'
-	fit='cover'
-/>
+![Layouts](/blog/pictures/studio3.png "Layouts")
 
 ## The Frontend
 
@@ -75,41 +45,17 @@ $grid = [1,2,1,1,1,2,1];
 
 This array will be trimmed or repeated depending on the number of projects. This array will be looped through along with the projects and classes would be added such as height1, height2 and height3. These classes use `grid-row-end: span 2;` and span.
 
-<Picture
-	src='/blog/pictures/studio4.png'
-	class='img-bg'
-	widths={[1000]}
-	formats={["avif", "webp", "jpg"]}
-	alt='Layouts'
-	aspectRatio='250:147'
-	fit='cover'
-/>
+![Layouts](/blog/pictures/studio4.png "Layouts")
 
 For the individual project pages, I used flexbox to make the images flow horizontally and changed the direction to vertical for the mobile view.
 
-<Picture
-	src='/blog/pictures/studio5.png'
-	class='img-bg'
-	widths={[1000]}
-	formats={["avif", "webp", "jpg"]}
-	alt='Layouts'
-	aspectRatio='250:147'
-	fit='cover'
-/>
+![Layouts](/blog/pictures/studio5.png "Layouts")
 
 ## The Backend
 
 The backed was done in PHP and MySQL. I also made a fully custom CMS to manage the site, the purpose was to make it as easy as possible to manage. This CMS includes dragging and dropping items to rearrange and a way to add, remove and edit projects and other content on the site. The content on every page except home and about can be edited through the CMS.
 
-<Picture
-	src='/blog/pictures/studio6.png'
-	class='img-bg'
-	widths={[1000]}
-	formats={["avif", "webp", "jpg"]}
-	alt='Layouts'
-	aspectRatio='250:147'
-	fit='cover'
-/>
+![Layouts](/blog/pictures/studio6.png "Layouts")
 
 For more information about the CMS, you can check out [this article](/blog/how-i-built-a-custom-cms).
 

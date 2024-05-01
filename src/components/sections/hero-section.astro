@@ -1,5 +1,5 @@
 ---
-import { Picture } from "@astrojs/image/components";
+import { Picture } from "astro:assets";
 import HeroImage from "../../assets/hero-image.jpg";
 import Section from "../general/section.astro";
 ---
@@ -16,11 +16,11 @@ import Section from "../general/section.astro";
 		</div>
 		<div class='bg-img'>
 			<Picture
-				src={HeroImage}
+				src={HeroImage as any}
 				widths={[1080]}
 				alt='Hero Image'
 				formats={["avif", "jpg", "webp"]}
-				aspectRatio='3:4'
+				inferSize
 			/>
 			<div class='overlay' aria-hidden='true'></div>
 		</div>

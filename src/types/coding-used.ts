@@ -14,11 +14,6 @@ export type CodingData = {
 	very_short_desc: string;
 	img: {
 		url: string;
-		imageTags?: {
-			height?: number;
-			width?: number;
-		};
-		aspectRatio: number;
 	};
 	github_link: string;
 	project_link: string;

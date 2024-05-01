@@ -1,18 +1,34 @@
 import { defineConfig } from "astro/config";
-import image from "@astrojs/image";
 import mdx from "@astrojs/mdx";
 
-import solidJs from "@astrojs/solid-js";
+import qwikdev from "@qwikdev/astro";
+import icon from "astro-icon";
 import codeTitles from "remark-code-titles";
 
 // https://astro.build/config
 export default defineConfig({
-	integrations: [image(), mdx(), solidJs()],
+	integrations: [mdx(), icon(), qwikdev()],
 	markdown: {
 		shikiConfig: {
 			theme: "material-theme-darker",
 		},
 		remarkPlugins: [codeTitles],
+	},
+	image: {
+		remotePatterns: [
+			{
+				protocol: "https",
+				hostname: "**.ytimg.com",
+			},
+			{
+				protocol: "https",
+				hostname: "**.staticflickr.com",
+			},
+			{
+				protocol: "https",
+				hostname: "**.cloudinary.com",
+			},
+		],
 	},
 	compressHTML: true,
 });

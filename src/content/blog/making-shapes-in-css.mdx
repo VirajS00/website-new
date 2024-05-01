@@ -12,9 +12,6 @@ project_id: 1
 import { Triangle } from "../../components/articles/triangle";
 import { SolidGradientExample } from "../../components/articles/solid-gradient";
 import { BorderRadiusExample } from "../../components/articles/border-radius-example";
-import AnchorElement from "../../components/markdown-components/anchor-element.astro";
-
-export const components = { a: AnchorElement };
 
 This started with a [CSS tricks article](https://css-tricks.com/the-shapes-of-css/) and a [youtube video](https://www.youtube.com/watch?v=P3LXA6duP5g) by Web Dev Simplified in which they made basic shapes with CSS.
 I decided to repliate vector app icons.
@@ -55,7 +52,7 @@ For example you can use borders to create triangles (this with create an upward 
 
 The setting width and height to “0” is super important since otherwise it will not look like a triangle. Move the slider below to see the border thickness chnage.
 
-<Triangle client:visible />
+<Triangle />
 
 _This is why you can use borders as triangles._
 
@@ -69,13 +66,13 @@ There was also one more trick I used pertaining to gradients where you can get a
 }
 ```
 
-<SolidGradientExample client:visible />
+<SolidGradientExample />
 
 You can also do that same with `radial-gradient` and it can create hard stops between 2 circles. Since a gradient is a `background-image`, you can play around with the `background-position` and `background-size` properties as well to create patterns with it.
 
 Border radius is also something you can mess with to create a leaf-like shape, you can play around with the unit either an `absolute unit(px)` or a `relative unit(%)`.
 
-<BorderRadiusExample client:visible />
+<BorderRadiusExample />
 
 These are maily the things I used for [this project](https://virajs00.github.io/css-logos/). There are many other creative ways to have fun with CSS.
 

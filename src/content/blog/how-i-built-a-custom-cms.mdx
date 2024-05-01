@@ -8,7 +8,6 @@ tags:
   - Web Dev
 ---
 
-import { Picture } from "@astrojs/image/components";
 import AnchorElement from "../../components/markdown-components/anchor-element.astro";
 
 export const components = { a: AnchorElement };
@@ -23,56 +22,20 @@ To graph out the analytics on the homepage of the admin, I used [chart.js](https
 
 Got the data from php where I exported it as json imported it into JavaScript using the `fetch()` API built into the browser and created the charts.
 
-<Picture
-	src='/blog/pictures/image-admin-1.png'
-	class='img-bg'
-	widths={[500]}
-	formats={["avif", "webp", "jpg"]}
-	alt='Layouts'
-	aspectRatio='219:200'
-	fit='cover'
-	style='max-width: 400px; margin: 0 auto; display: block;'
-/>
+![Layouts](/blog/pictures/image-admin-1.png "Layouts")
 
 For the "Photos" and "Other Content" page, I got the data in using PHP and then used a script which I created with the help of this [tutorial](https://www.youtube.com/watch?v=jfYWwQrtzzY) by Web Dev Simplified on YouTube for rearranging the photos,
 then using `fetch()`, I linked it to PHP to update the MySQL database.
 
-<Picture
-	src='/blog/pictures/image-admin-2.png'
-	class='img-bg'
-	widths={[800]}
-	formats={["avif", "webp", "jpg"]}
-	alt='Layouts'
-	aspectRatio='139:100'
-	fit='cover'
-	style='max-width: 600px; margin: 0 auto; display: block;'
-/>
+![Layouts](/blog/pictures/image-admin-2.png "Layouts")
 
 In the upload pages, the image upload buttons get a loader when you select an image, the images are uploaded in a separate form and an `<input type='hidden'>` gets updated for putting them in the database.
 
-<Picture
-	src='/blog/pictures/image-admin-3.png'
-	class='img-bg'
-	widths={[800]}
-	formats={["avif", "webp", "jpg"]}
-	alt='Layouts'
-	aspectRatio='390:400'
-	fit='cover'
-	style='max-width: 00px; margin: 0 auto; display: block;'
-/>
+![Layouts](/blog/pictures/image-admin-3.png "Layouts")
 
 The other content also has platforms which can be added and removed with the help of the platforms page.
 
-<Picture
-	src='/blog/pictures/image-admin-4.png'
-	class='img-bg'
-	widths={[600]}
-	formats={["avif", "webp", "jpg"]}
-	alt='Layouts'
-	aspectRatio='482:400'
-	fit='cover'
-	style='max-width: 400px; margin: 0 auto; display: block;'
-/>
+![Layouts](/blog/pictures/image-admin-4.png "Layouts")
 
 I also create a rich TextArea myself. This was a mini project in of itself. I used the javascript `execCommand()` API to create all the functions of the TextArea. I created an content editable `<iframe>` and executed all the commands in it, at the end parsed the HTML inside the iframe using the following code:
 
@@ -123,15 +86,6 @@ function countHits() {
 
 For the feedback page, I'm just putting user feedback in the database and presenting it in the admin page as cards.
 
-<Picture
-	src='/blog/pictures/image-admin-5.png'
-	class='img-bg'
-	widths={[600]}
-	formats={["avif", "webp", "jpg"]}
-	alt='Layouts'
-	aspectRatio='250:167'
-	fit='cover'
-	style='max-width: 400px; margin: 0 auto; display: block;'
-/>
+![Layouts](/blog/pictures/image-admin-5.png "Layouts")
 
 Overall it was a big project but it was fun to do and I learned a lot from it as well.

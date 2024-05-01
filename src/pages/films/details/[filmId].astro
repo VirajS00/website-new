@@ -1,5 +1,5 @@
 ---
-import { Picture } from "@astrojs/image/components";
+import { Picture } from "astro:assets";
 import {
 	getVideoIds,
 	getVideoDetails,
@@ -36,9 +36,7 @@ const filmDetails = await getVideoDetails(filmId);
 			<div class='title-cont'>
 				<h1>{filmDetails.title}</h1>
 				<p>
-					{FilmCategories[filmDetails.category as never]} ・ {
-						filmDetails.year
-					}
+					{FilmCategories[filmDetails.category as never]} ・ {filmDetails.year}
 				</p>
 			</div>
 			<div class='role'>My Role: {filmDetails.role}</div>
@@ -54,13 +52,13 @@ const filmDetails = await getVideoDetails(filmId);
 					<div class='images-conatiner'>
 						{filmDetails.images.map((image) => (
 							<Picture
-								src={image.imageUrl}
+								src={image.imageUrl as any}
 								class='img-still'
 								widths={[1000]}
 								formats={["avif", "webp", "jpg"]}
 								alt={filmDetails.title ?? ""}
-								aspectRatio={image.aspectRatio}
-								fit='contain'
+								inferSize
+								style={{ objectFit: "contain" }}
 							/>
 						))}
 					</div>

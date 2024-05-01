@@ -1,32 +1,37 @@
 {
-	"name": "my-website",
+	"name": "viraj-website",
 	"type": "module",
 	"version": "0.0.1",
 	"scripts": {
 		"dev": "astro dev",
 		"start": "astro dev",
-		"build": "astro build",
+		"build": "astro check && astro build",
 		"preview": "astro preview",
-		"astro": "astro",
-		"sync": "astro sync"
+		"astro": "astro"
 	},
 	"dependencies": {
-		"@astrojs/image": "^0.16.9",
-		"@astrojs/mdx": "^0.19.7",
-		"@astrojs/solid-js": "^2.2.0",
-		"astro": "^2.5.0",
-		"astro-icon": "0.8.0",
+		"@astrojs/check": "^0.5.10",
+		"@astrojs/mdx": "^2.3.1",
+		"@builder.io/qwik": "^1.5.2",
+		"@iconify-json/heroicons-solid": "1.1.11",
+		"@iconify-json/ic": "^1.1.17",
+		"@iconify-json/mdi": "^1.1.66",
+		"@iconify-json/ri": "^1.1.20",
+		"@iconify-json/uil": "^1.1.8",
+		"@qwikdev/astro": "^0.5.14",
+		"astro": "^4.7.0",
+		"astro-icon": "^1.1.0",
 		"autolinker": "4.0.0",
-		"classnames": "2.3.2",
-		"mysql2": "3.3.3",
+		"classnames": "2.5.1",
+		"image-size": "^1.1.1",
 		"remark-code-titles": "0.1.2",
-		"solid-js": "^1.4.3",
-		"ts-exif-parser": "^0.2.2"
+		"sharp": "^0.33.3",
+		"typescript": "^5.4.5"
 	},
 	"devDependencies": {
-		"autoprefixer": "10.4.14",
-		"cssnano": "6.0.1",
-		"sass": "1.62.1",
-		"sharp": "0.30.4"
+		"sass": "^1.75.0",
+		"postcss": "8.4.38",
+		"autoprefixer": "10.4.19",
+		"cssnano": "7.0.1"
 	}
 }

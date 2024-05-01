@@ -2,10 +2,10 @@
 import PictureCard from "../../components/general/picture-card.astro";
 import { getCodingDesign } from "../../helpers/get-coding-design";
 import BaseLayout from "../../layouts/base-layout.astro";
-import { Icon } from "astro-icon";
+import { Icon } from "astro-icon/components";
 import { getCollection } from "astro:content";
 
-const data = await getCodingDesign();
+const data = getCodingDesign();
 
 const blogArticles = await getCollection("blog");
 
@@ -28,8 +28,7 @@ const articleData = blogArticles
 						imageUrl={d.img.url}
 						imageAlt={d.title}
 						height={500}
-						newTab
-						aspectRatio={d.img.aspectRatio}>
+						newTab>
 						<div class='card-content'>
 							<div>
 								<h3 class='film-name'>{d.title}</h3>

@@ -1,9 +1,9 @@
 ---
-import { Picture } from "@astrojs/image/components";
+import { Picture } from "astro:assets";
 import Card from "./card.astro";
 
 interface Props {
-	imageUrl: string;
+	imageUrl: ImageMetadata | string;
 	imageAlt: string;
 	link?: string;
 	aspectRatio?: number | `${number}:${number}`;
@@ -13,6 +13,9 @@ interface Props {
 	imageFit?: "cover" | "contain" | "fill" | "inside" | "outside";
 	imageType?: "astro-image" | "html-image";
 	newTab?: boolean;
+	inferSize?: boolean;
+	imgWidth?: number;
+	imgHeight?: number;
 }
 
 const {
@@ -26,6 +29,9 @@ const {
 	imageFit = "cover",
 	imageType = "astro-image",
 	newTab = false,
+	inferSize = true,
+	imgWidth,
+	imgHeight,
 } = Astro.props;
 ---
 
@@ -42,17 +48,17 @@ const {
 			{
 				imageType === "astro-image" ? (
 					<Picture
-						src={imageUrl}
+						src={imageUrl as any}
 						class='img-bg'
-						widths={[400]}
+						widths={[imgWidth ?? 400]}
+						height={imgHeight}
 						formats={["avif", "webp", "jpg"]}
 						alt={imageAlt}
-						aspectRatio={aspectRatio}
-						fit={imageFit}
+						inferSize={inferSize}
 					/>
 				) : (
 					<img
-						src={imageUrl}
+						src={imageUrl as any}
 						alt={imageAlt}
 						width='400'
 						class='img-bg'
@@ -66,21 +72,20 @@ const {
 				{
 					imageType === "astro-image" ? (
 						<Picture
-							src={imageUrl}
+							src={imageUrl as any}
 							class='img-main'
-							widths={[400]}
+							widths={[imgWidth ?? 400]}
+							height={imgHeight}
 							formats={["avif", "webp", "jpg"]}
 							alt={imageAlt}
-							aspectRatio={aspectRatio}
-							fit={imageFit}
+							inferSize={inferSize}
 						/>
 					) : (
 						<img
-							src={imageUrl}
+							src={imageUrl as any}
 							alt={imageAlt}
 							width='400'
 							class='img-main'
-							style={`object-fit: ${imageFit}; aspect-ratio: ${aspectRatio};`}
 						/>
 					)
 				}

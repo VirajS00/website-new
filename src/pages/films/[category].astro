@@ -41,15 +41,14 @@ const categoriesDropDownItems: MenuItem[] = currentCategories.map((x) => ({
 			{
 				videosSummary.map((video) => (
 					<PictureCard
-						imageUrl={video.thumbnail}
+						imageUrl={video.thumbnail satisfies string}
 						imageAlt={`thumbnail - ${video.thumbnail}`}
 						link={`/films/details/${video.videoId}`}
 						height={500}
 						aspectRatio={"4:3"}>
 						<h3 class='film-name'>{video.title}</h3>
 						<div class='film-meta'>
-							{FilmCategories[video.category as never]} ・{" "}
-							{video.year}
+							{FilmCategories[video.category as never]} ・ {video.year}
 						</div>
 						<p class='film-desc'>{video.short_description}</p>
 					</PictureCard>

@@ -1,0 +1,59 @@
+{
+	"name": "coding_design",
+	"data": [
+		{
+			"id": 1,
+			"title": "CSS App Logos",
+			"very_short_desc": "This is a project where I've recreated app logos in pure CSS.",
+			"img": "https://res.cloudinary.com/dk61arwer/image/upload/v1695839090/coding_design/etkfdh8z848jdducvtt0.jpg",
+			"github_link": "https://github.com/VirajS00/css-logos",
+			"project_link": "https://virajs00.github.io/css-logos/",
+			"tools_used": ["HTML", "CSS"]
+		},
+		{
+			"id": 2,
+			"title": "Studio 9491 website",
+			"very_short_desc": "This is a website I designed and developed for an architectural firm.",
+			"img": "https://res.cloudinary.com/dk61arwer/image/upload/v1695838875/coding_design/n8eolyfbxaexppvyvxc1.jpg",
+			"github_link": "",
+			"project_link": "http://studio9491.com/",
+			"tools_used": ["HTML", "CSS", "JavaScript", "PHP"]
+		},
+		{
+			"id": 3,
+			"title": "SASS(SCSS) colour themes",
+			"very_short_desc": "This is a project where I create colour themes based on SASS maps.",
+			"img": "https://res.cloudinary.com/dk61arwer/image/upload/v1698769863/coding_design/cmhujsm8byv6l9z5kdb4.jpg",
+			"github_link": "https://github.com/VirajS00/sass-colour-themes",
+			"project_link": "https://sass-custom-themes.netlify.app/",
+			"tools_used": ["HTML", "SCSS"]
+		},
+		{
+			"id": 4,
+			"title": "Microsoft teams reimagined",
+			"very_short_desc": "This project is a redesign of Microsoft teams. ",
+			"img": "https://res.cloudinary.com/dk61arwer/image/upload/v1695838891/coding_design/mgm5ki7at5b9ulobtgkn.png",
+			"github_link": "",
+			"project_link": "https://www.figma.com/proto/WFSWpBosSKfpD0RjDRSeOi/Untitled?node-id=1%3A2&viewport=545%2C254%2C0.19833160936832428&scaling=scale-down",
+			"tools_used": ["Figma"]
+		},
+		{
+			"id": 5,
+			"title": "Gradient Patterns",
+			"very_short_desc": "In this project, I made background patterns with CSS gradients.",
+			"img": "https://res.cloudinary.com/dk61arwer/image/upload/v1698769683/coding_design/zithhhjsrx1feqj0vnly.png",
+			"github_link": "",
+			"project_link": "https://codepen.io/virajs00/pen/YzpppxX",
+			"tools_used": ["HTML", "CSS"]
+		},
+		{
+			"id": 6,
+			"title": "No JavaScript Profile Page",
+			"very_short_desc": "in this project I tried to see how far I can get without javascript.",
+			"img": "https://res.cloudinary.com/dk61arwer/image/upload/v1698772375/coding_design/u89feyde8nfgzbzmbpbg.png",
+			"github_link": "https://github.com/VirajS00/no-js-profile-page",
+			"project_link": "https://no-js-profile-page.onrender.com/",
+			"tools_used": ["HTML", "CSS", "Go"]
+		}
+	]
+}
