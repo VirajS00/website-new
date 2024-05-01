@@ -62,7 +62,7 @@ const categoriesDropDownItems: MenuItem[] = currentCategories.map((x) => ({
 	.content {
 		padding-block-start: 80px;
 		padding-block-end: 150px;
-		padding-inline: 1.7em;
+		// padding-inline: 1.7em;
 		max-width: 1600px;
 		margin: 0 auto;
 	}
@@ -73,10 +73,16 @@ const categoriesDropDownItems: MenuItem[] = currentCategories.map((x) => ({
 
 	.card-container {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
 		gap: 2em;
+		width: 100%;
 		max-width: 1400px;
-		padding-inline: 2rem;
+		padding-inline: 1rem;
+		margin-inline: auto;
+
+		@media screen and (min-width: 768px) {
+			padding-inline: 2rem;
+			grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+		}
 	}
 
 	.film-name {
@@ -93,7 +99,13 @@ const categoriesDropDownItems: MenuItem[] = currentCategories.map((x) => ({
 
 	.title-container {
 		max-width: 1400px;
-		padding: 2rem;
+		padding-inline: 1rem;
+		margin-inline: auto;
+		margin-block-end: 2rem;
+
+		@media screen and (min-width: 768px) {
+			padding-inline: 2rem;
+		}
 
 		h1 {
 			margin: 0;
