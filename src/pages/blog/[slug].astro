@@ -8,8 +8,6 @@ import BaseLayout from "../../layouts/base-layout.astro";
 import MdImage from "../../components/markdown-components/md-image.astro";
 import AnchorElement from "../../components/markdown-components/anchor-element.astro";
 import H2 from "../../components/markdown-components/h2.astro";
-import { getImage } from "astro:assets";
-import SizeOf from "image-size";
 
 interface Props {
 	entry: CollectionEntry<"blog">;
@@ -28,31 +26,12 @@ const { slug } = Astro.params;
 
 const { Content } = await ent.render();
 const entry = await getEntryBySlug("blog", slug as any);
-
-const dimentions = SizeOf(`public/blog/${entry?.data.image}`);
-
-const image = await getImage({
-	src: `/blog/${entry?.data.image}`,
-	height: dimentions.height,
-	width: dimentions.width,
-	format: "avif",
-});
 ---
 
 <BaseLayout title={entry?.data.title ?? ""}>
 	<div class='content'>
 		<div class='inner-content'>
 			<h1>{entry?.data.title}</h1>
-			<div class='img-cont'>
-				<img
-					src={image.src}
-					alt={entry?.data.title ?? ""}
-					width={image.attributes.width}
-					height={image.attributes.height}
-					loading='eager'
-					style={{ height: "auto", width: "100%" }}
-				/>
-			</div>
 			<Content components={{ img: MdImage, a: AnchorElement, h2: H2 }} />
 		</div>
 	</div>
@@ -70,19 +49,17 @@ const image = await getImage({
 		}
 	}
 
+	p {
+		text-wrap: balance;
+	}
+
 	h1 {
 		text-align: center;
+		font-size: clamp(2.25rem, 4vw, 3rem);
+		text-wrap: balance;
 
 		@media screen and (min-width: 800px) {
 			margin-block-start: 0;
-		}
-	}
-
-	.img-cont {
-		text-align: center;
-
-		img {
-			max-width: 500px;
 		}
 	}
 
