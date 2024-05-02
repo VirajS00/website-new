@@ -42,7 +42,9 @@ import { Picture } from "astro:assets";
 						target='_blank'
 						rel='noopener noreferrer'
 						class='logo-a'
+						aria-label='LinkedIn'
 					>
+						<span class='hidden'>LinkedIn</span>
 						<Icon name='mdi:linkedin' size={30} />
 					</a>
 					<a
@@ -50,7 +52,9 @@ import { Picture } from "astro:assets";
 						target='_blank'
 						rel='noopener noreferrer'
 						class='logo-a'
+						aria-label='Instagram'
 					>
+						<span class='hidden'>Instagram</span>
 						<Icon name='ri:instagram-fill' size={30} />
 					</a>
 					<a
@@ -58,7 +62,9 @@ import { Picture } from "astro:assets";
 						target='_blank'
 						rel='noopener noreferrer'
 						class='logo-a'
+						aria-label='GitHub'
 					>
+						<span class='hidden'>GitHub</span>
 						<Icon name='uil:github' size={30} />
 					</a>
 					<a
@@ -66,7 +72,9 @@ import { Picture } from "astro:assets";
 						target='_blank'
 						rel='noopener noreferrer'
 						class='logo-a'
+						aria-label='Codepen'
 					>
+						<span class='hidden'>Codepen</span>
 						<Icon name='ri:codepen-fill' size={30} />
 					</a>
 					<a
@@ -74,7 +82,9 @@ import { Picture } from "astro:assets";
 						target='_blank'
 						rel='noopener noreferrer'
 						class='logo-a'
+						aria-label='YouTube'
 					>
+						<span class='hidden'>YouTube</span>
 						<Icon name='mdi:youtube' size={30} />
 					</a>
 				</div>
@@ -211,5 +221,9 @@ import { Picture } from "astro:assets";
 
 	.logo-a {
 		text-decoration: none !important;
+	}
+
+	.hidden {
+		display: none;
 	}
 </style>
