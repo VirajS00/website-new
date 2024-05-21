@@ -1,13 +1,15 @@
 import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
-
 import qwikdev from "@qwikdev/astro";
 import icon from "astro-icon";
 import codeTitles from "remark-code-titles";
 
+import sitemap from "@astrojs/sitemap";
+
 // https://astro.build/config
 export default defineConfig({
-	integrations: [mdx(), icon(), qwikdev()],
+	site: "https://virajshukla.com",
+	integrations: [mdx(), icon(), qwikdev(), sitemap()],
 	markdown: {
 		shikiConfig: {
 			theme: "material-theme-darker",
