@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://virajshukla.com/sitemap-index.xml
