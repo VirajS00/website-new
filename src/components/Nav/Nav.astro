@@ -1,0 +1,247 @@
+---
+import { Image } from "astro:assets";
+
+const pathname = Astro.url.pathname;
+const isCurrent = (path: string) => {
+  if (path === "/") {
+    return pathname === "/" || pathname === "";
+  }
+  return pathname.startsWith(path);
+};
+---
+
+<header>
+  <nav class="nav-container">
+    <a href="/" class="logo-link" aria-label="Home">
+      <Image src="/logo.svg" alt="logo" width={50} height={50} />
+    </a>
+
+    <button
+      type="button"
+      class="menu-toggle"
+      id="menu-toggle"
+      aria-expanded="false"
+      aria-controls="nav-menu"
+      aria-label="Toggle navigation menu"
+    >
+      <span class="hamburger-bar"></span>
+      <span class="hamburger-bar"></span>
+      <span class="hamburger-bar"></span>
+    </button>
+
+    <ul id="nav-menu" class="nav-menu">
+      <li>
+        <a href="/" class:list={[{ active: isCurrent("/") }]}>Home</a>
+      </li>
+      <li>
+        <a href="/contact" class:list={[{ active: isCurrent("/contact") }]}
+          >Contact</a
+        >
+      </li>
+      <li>
+        <a href="/work" class:list={[{ active: isCurrent("/work") }]}>My Work</a
+        >
+      </li>
+      <li>
+        <a href="/blog" class:list={[{ active: isCurrent("/blog") }]}>Blog</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<script>
+  const toggleBtn = document.getElementById("menu-toggle");
+  const menu = document.getElementById("nav-menu");
+
+  if (toggleBtn && menu) {
+    toggleBtn.addEventListener("click", () => {
+      const isExpanded = toggleBtn.getAttribute("aria-expanded") === "true";
+      toggleBtn.setAttribute("aria-expanded", String(!isExpanded));
+      menu.classList.toggle("is-open");
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && menu.classList.contains("is-open")) {
+        toggleBtn.setAttribute("aria-expanded", "false");
+        menu.classList.remove("is-open");
+        toggleBtn.focus();
+      }
+    });
+  }
+</script>
+
+<style>
+  header {
+    background-color: #fffdf3;
+    border-top: 2px solid #1a1a1a;
+    border-bottom: 2px solid #1a1a1a;
+    padding-block: 0.6rem;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 10;
+  }
+
+  .nav-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 1600px;
+    padding: 0 1.5rem;
+    margin-inline: auto;
+  }
+
+  .logo-link {
+    display: flex;
+    align-items: center;
+    margin-right: 2rem;
+  }
+
+  button.menu-toggle {
+    display: none !important;
+  }
+
+  .nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-menu li {
+    display: flex;
+    align-items: center;
+  }
+
+  nav a {
+    text-decoration: none;
+    color: #1a1a1a;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 0.875rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 0.2rem 0;
+    position: relative;
+    transition: color 0.15s ease;
+  }
+
+  .nav-menu a.active::after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background-image: url("/active-underline.svg");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+  }
+
+  .nav-menu a:hover {
+    opacity: 0.8;
+  }
+
+  @media (max-width: 768px) {
+    .nav-container {
+      justify-content: space-between;
+    }
+
+    button.menu-toggle {
+      display: flex !important;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      width: 24px;
+      height: 24px;
+      position: relative;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    .hamburger-bar {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 2.5px;
+      background-color: #1a1a1a;
+      border-radius: 2px;
+      transition:
+        transform 0.25s ease,
+        opacity 0.2s ease,
+        top 0.25s ease;
+    }
+
+    .hamburger-bar:nth-child(1) {
+      top: 3px;
+    }
+
+    .hamburger-bar:nth-child(2) {
+      top: 11px;
+    }
+
+    .hamburger-bar:nth-child(3) {
+      top: 19px;
+    }
+
+    button.menu-toggle[aria-expanded="true"] .hamburger-bar:nth-child(1) {
+      top: 11px;
+      transform: rotate(45deg);
+    }
+
+    button.menu-toggle[aria-expanded="true"] .hamburger-bar:nth-child(2) {
+      opacity: 0;
+    }
+
+    button.menu-toggle[aria-expanded="true"] .hamburger-bar:nth-child(3) {
+      top: 11px;
+      transform: rotate(-45deg);
+    }
+
+    .nav-menu {
+      display: flex;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background-color: #fffdf3;
+      border-bottom: 2px solid #1a1a1a;
+      flex-direction: column;
+      align-items: center;
+      padding: 1.25rem 2rem;
+      gap: 1.25rem;
+      z-index: 99;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      transform: translateY(-12px);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition:
+        transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 0.25s ease,
+        visibility 0.3s;
+    }
+
+    .nav-menu li {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .nav-menu a {
+      display: inline-block;
+      width: auto;
+    }
+
+    .nav-menu.is-open {
+      transform: translateY(0);
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+  }
+</style>

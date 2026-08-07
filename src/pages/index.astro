@@ -1,17 +1,157 @@
 ---
-
+import { Image } from "astro:assets";
+import Layout from "../components/Layout/Layout.astro";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout
+  title="Viraj's Website"
+  description="The personal website of Viraj Shukla, a frontend developer and nature & macro photography enthusiast. Explore my web projects and photography portfolio."
+>
+  <section class="container">
+    <Image
+      src="/viraj-photo.jpg"
+      height={600}
+      width={600}
+      alt="viraj"
+      class="image"
+    />
+    <div>
+      <h1>Hi, I&apos;m <span class="blue">Viraj</span></h1>
+      <p>
+        I am a <a href="/work/coding-design">Web Developer</a> by profession, <a
+          href="/work/photos">Photographer</a
+        >{" "}
+        by passion and studied Photography and <a href="/work/filmmaking"
+          >Filmmaking</a
+        > in college
+      </p>
+      <div class="socials">
+        <a href="" class="icon-link" aria-label="Viraj's Linkedin">
+          <Image
+            src="/icons/linkedin.svg"
+            height={40}
+            width={40}
+            alt=""
+            class="social-icon"
+          />
+        </a>
+        <a href="" class="icon-link" aria-label="Viraj's Instagram">
+          <Image
+            src="/icons/instagram.svg"
+            height={40}
+            width={40}
+            alt=""
+            class="social-icon"
+          />
+        </a>
+        <a href="" class="icon-link" aria-label="Viraj's Github">
+          <Image
+            src="/icons/github.svg"
+            height={40}
+            width={40}
+            alt=""
+            class="social-icon"
+          />
+        </a>
+        <a href="" class="icon-link" aria-label="Viraj's Codepen">
+          <Image
+            src="/icons/codepen.svg"
+            height={40}
+            width={40}
+            alt=""
+            class="social-icon"
+          />
+        </a>
+        <a href="" class="icon-link" aria-label="Viraj's Youtube">
+          <Image
+            src="/icons/youtube.svg"
+            height={40}
+            width={40}
+            alt=""
+            class="social-icon"
+          />
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: center;
+    justify-items: center;
+    padding-block: 2.5rem;
+    text-align: center;
+  }
+
+  .image {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 6px 6px 0 #000;
+  }
+
+  h1 {
+    filter: drop-shadow(0.05em 0.05em 0 rgb(0 0 0 / 0.25));
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    margin-block-start: 0;
+    margin-block-end: 1.5rem;
+
+    & .blue {
+      color: #3b93ff;
+    }
+  }
+
+  p {
+    font-size: clamp(1rem, 4vw, 1.125rem);
+    letter-spacing: 1.43;
+    line-height: 1.5;
+    text-shadow: 1px 1px rgb(0 0 0 / 0.25);
+
+    & a {
+      color: #4f9c7b;
+      text-decoration: underline;
+      text-underline-offset: 0.15em;
+    }
+
+    & a:hover {
+      color: #407f63;
+    }
+  }
+
+  .social-icon {
+    filter: drop-shadow(1px 1px #000);
+  }
+
+  .icon-link {
+    text-decoration: none;
+    color: #000;
+
+    &:hover .social-icon {
+      translate: 1px 1px;
+      filter: drop-shadow(0px 0px #000);
+    }
+  }
+
+  .social-icons {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  @media (min-width: 768px) {
+    .container {
+      grid-template-columns: 400px 1fr;
+      justify-items: start;
+      padding-block: 5rem;
+      text-align: left;
+    }
+  }
+</style>
