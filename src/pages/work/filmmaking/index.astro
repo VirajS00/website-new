@@ -1,0 +1,278 @@
+---
+import Layout from "../../../components/Layout/Layout.astro";
+import filmsData from "../../../../data/films.json";
+
+const categoryLabels: Record<string, string> = {
+  all: "All",
+  demo_reel: "Demo Reels",
+  non_fiction: "Non-Fiction",
+  fiction: "Fiction",
+  corporate_videos: "Corporate Videos",
+  other: "Other",
+};
+
+const sortedFilms = [...filmsData.data].sort(
+  (a, b) => a.sort_order - b.sort_order,
+);
+---
+
+<Layout
+  title="Viraj's Website | Filmmaking"
+  description="Viraj Shukla's Filmmaking work and documentary projects"
+>
+  <section class="filmmaking-section">
+    <div class="header-content">
+      <h1>Filmmaking</h1>
+      <div class="select-container">
+        <select
+          class="custom-select"
+          name="filmmaking-dropdown"
+          id="filmmaking-dropdown"
+          aria-label="Filter films by category"
+        >
+          <option value="all" selected>All</option>
+          <option value="demo_reel">Demo Reels</option>
+          <option value="non_fiction">Non-Fiction</option>
+          <option value="fiction">Fiction</option>
+          <option value="corporate_videos">Corporate Videos</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="films-grid" id="films-grid">
+      {
+        sortedFilms.map((film) => (
+          <article class="film-card" data-category={film.category}>
+            <img
+              src={`https://img.youtube.com/vi/${film.film_id}/hqdefault.jpg`}
+              class="video-thumbnail"
+            />
+            <div class="film-details">
+              <div class="badge-row">
+                <span class="badge category-badge">
+                  {categoryLabels[film.category] || film.category}
+                </span>
+                <span class="badge year-badge">{film.year}</span>
+              </div>
+              <p class="film-desc">{film.film_short_description}</p>
+              <div class="role-row">
+                <span class="role-label">Role:</span>
+                <span class="role-value">{film.my_role}</span>
+              </div>
+              <a href={`/work/filmmaking/${film.film_id}`} class="film-btn">
+                Check it out →
+              </a>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <div class="empty-state" id="empty-state" style="display: none;">
+      <p>No films found in this category.</p>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  const selectElement = document.getElementById(
+    "filmmaking-dropdown",
+  ) as HTMLSelectElement | null;
+  const filmCards = document.querySelectorAll<HTMLElement>(".film-card");
+  const emptyState = document.getElementById("empty-state");
+
+  function filterFilms(category: string) {
+    let count = 0;
+    filmCards.forEach((card) => {
+      const cardCategory = card.getAttribute("data-category");
+      if (category === "all" || cardCategory === category) {
+        card.style.display = "flex";
+        count++;
+      } else {
+        card.style.display = "none";
+      }
+    });
+
+    if (emptyState) {
+      emptyState.style.display = count === 0 ? "block" : "none";
+    }
+
+    if (selectElement) {
+      selectElement.value = category;
+    }
+  }
+
+  function handleUrlAndFilter() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get("category") || "all";
+    filterFilms(category);
+  }
+
+  if (selectElement) {
+    selectElement.addEventListener("change", (e) => {
+      const selectedValue = (e.target as HTMLSelectElement).value;
+
+      // Update URL
+      const url = new URL(window.location.href);
+      if (selectedValue === "all") {
+        url.searchParams.delete("category");
+      } else {
+        url.searchParams.set("category", selectedValue);
+      }
+      history.pushState({}, "", url);
+
+      filterFilms(selectedValue);
+    });
+  }
+
+  // Handle back/forward navigation
+  window.addEventListener("popstate", handleUrlAndFilter);
+
+  // Initialize on load
+  handleUrlAndFilter();
+</script>
+
+<style>
+  .filmmaking-section {
+    padding-bottom: 5rem;
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    text-transform: uppercase;
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-block: clamp(2rem, 4vw, 3.5rem);
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  /* Films Grid */
+  .films-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 460px), 1fr));
+    gap: 2.5rem;
+  }
+
+  .film-card {
+    background-color: #fff;
+    border: 2px solid #000;
+    box-shadow: 6px 6px 0 #000;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition:
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .film-details {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 1rem;
+  }
+
+  .badge-row {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  .badge {
+    border: 2px solid #000;
+    padding: 0.25rem 0.65rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    box-shadow: 2px 2px 0 #000;
+  }
+
+  .category-badge {
+    background-color: #c6ff86;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .year-badge {
+    background-color: #ffa5a7;
+  }
+
+  .film-desc {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    flex: 1;
+  }
+
+  .role-row {
+    font-size: 0.85rem;
+    padding-top: 0.5rem;
+    border-top: 2px dashed #000;
+    display: flex;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+  }
+
+  .role-label {
+    font-weight: 700;
+  }
+
+  .role-value {
+    color: #333;
+  }
+
+  .video-thumbnail {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    background-color: #000;
+    border-bottom: 2px solid #000;
+    display: block;
+  }
+
+  .film-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    background-color: #fff;
+    color: #000;
+    border: 2px solid #000;
+    padding: 0.6rem 1.15rem;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 3px 3px 0 #000;
+    transition:
+      transform 0.1s ease,
+      box-shadow 0.1s ease,
+      background-color 0.1s ease;
+    margin-top: 0.25rem;
+  }
+
+  .film-btn:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 #000;
+    background-color: #a5e6ff;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 4rem 1.5rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border: 2px dashed #000;
+    background-color: #fff8e7;
+    box-shadow: 4px 4px 0 #000;
+    margin-top: 2rem;
+  }
+</style>

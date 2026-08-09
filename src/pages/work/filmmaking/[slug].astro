@@ -1,0 +1,370 @@
+---
+import Layout from "../../../components/Layout/Layout.astro";
+import filmsData from "../../../../data/films.json";
+import Autolinker from "autolinker";
+
+export function getStaticPaths() {
+  return filmsData.data.map((film) => {
+    return {
+      params: { slug: film.film_id },
+      props: { film },
+    };
+  });
+}
+
+const { film } = Astro.props;
+
+interface FilmDetailsReturnType {
+  video_id: string;
+  title?: string;
+  description: string;
+  role: string;
+  category: string;
+  year: string;
+  images?: { imageUrl: string }[];
+}
+
+interface YoutubeApiResponseType {
+  items: {
+    snippet: {
+      title: string;
+      description: string;
+      resourceId: {
+        videoId: string;
+      };
+    };
+  }[];
+}
+
+const getVideoDetails = async (
+  filmId?: string,
+): Promise<FilmDetailsReturnType> => {
+  const url = import.meta.env.YOUTUBE_API_URL;
+
+  const res = await fetch(url, {
+    headers: {
+      "Content-type": "application/JSON",
+    },
+  });
+
+  const ytData = (await res.json()) as YoutubeApiResponseType;
+
+  const fd = filmsData.data.find((x) => x.film_id === filmId);
+
+  const filmYt = ytData.items?.find(
+    (y) => y.snippet.resourceId.videoId === fd?.film_id,
+  );
+
+  const autolinker = new Autolinker({
+    newWindow: true,
+    className: "film-desc-link",
+  });
+
+  const images = fd?.images.map((x) => {
+    return {
+      imageUrl: x,
+    };
+  });
+
+  return {
+    video_id: fd?.film_id ?? "",
+    title: filmYt?.snippet?.title,
+    description: autolinker.link(
+      filmYt?.snippet?.description?.replace(/(?:\r\n|\r|\n)/g, "<br>") ??
+        fd?.film_short_description ??
+        "",
+    ),
+    role: fd?.my_role ?? "",
+    category: fd?.category ?? "",
+    year: fd?.year ?? "",
+    images,
+  };
+};
+
+const filmDetails = await getVideoDetails(film.film_id);
+
+const categoryLabels: Record<string, string> = {
+  demo_reel: "Demo Reel",
+  non_fiction: "Non-Fiction",
+  fiction: "Fiction",
+  corporate_videos: "Corporate Video",
+  other: "Other",
+};
+
+const pageTitle = (
+  categoryLabels[filmDetails.category] || filmDetails.category
+).toUpperCase();
+---
+
+<Layout
+  title={`Viraj's Website | ${pageTitle}`}
+  description={filmDetails.title || film.film_short_description}
+>
+  <main class="film-detail-page">
+    <header class="page-header">
+      <a
+        href="/work/filmmaking"
+        class="back-btn"
+        aria-label="Back to filmmaking"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="3"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </a>
+      <h1 class="page-title">{pageTitle}</h1>
+    </header>
+
+    <div class="video-section">
+      <div class="video-container">
+        <iframe
+          src={`https://www.youtube-nocookie.com/embed/${film.film_id}`}
+          title={film.film_short_description}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <section class="info-section">
+      <h2 class="role-text">MY ROLE: {filmDetails.role.toUpperCase()}</h2>
+      <p
+        class="description-text"
+        id="desc-text"
+        set:html={filmDetails.description}
+      />
+      <button id="show-more-btn" class="film-btn">Show More</button>
+    </section>
+
+    {
+      filmDetails.images && filmDetails.images.length > 0 && (
+        <section class="stills-section">
+          <h2 class="stills-title">FILM STILLS</h2>
+          <div class="stills-stack">
+            {filmDetails.images.map((img) => (
+              <img
+                src={img.imageUrl}
+                alt="Film still"
+                class="film-still-img"
+                loading="lazy"
+              />
+            ))}
+          </div>
+        </section>
+      )
+    }
+  </main>
+</Layout>
+
+<style>
+  .film-detail-page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding-top: 3rem;
+    padding-bottom: 5rem;
+  }
+
+  .page-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .back-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background-color: #fce653;
+    border: 3px solid #000;
+    border-radius: 50%;
+    color: #000;
+    text-decoration: none;
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 #000;
+    transition:
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .back-btn:hover {
+    transform: translate(0px, 0px);
+    box-shadow: none;
+  }
+
+  .back-btn svg {
+    transform: translateX(-2px); /* visual centering for chevron */
+  }
+
+  .page-title {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    margin: 0;
+    text-shadow: 4px 4px 0px #e0e0e0;
+    letter-spacing: 0.05em;
+  }
+
+  .video-section {
+    margin-bottom: 2.5rem;
+  }
+
+  .video-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 4px solid #000;
+    box-shadow: 8px 8px 0 #000;
+    background-color: #000;
+  }
+
+  .video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  .info-section {
+    margin-bottom: 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .role-text {
+    font-size: 1.25rem;
+    margin: 0;
+    font-weight: 800;
+  }
+
+  .description-text {
+    position: relative;
+    font-size: 1.15rem;
+    line-height: 1.6;
+    margin: 0;
+    font-family: inherit;
+    font-weight: 600;
+
+    /* Clamp using line-height */
+    max-height: calc(1.15rem * 1.6 * 3); /* 3 lines */
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .description-text::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2.5rem;
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 1)
+    );
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .description-text.expanded::after {
+    opacity: 0;
+  }
+
+  .description-text.expanded {
+    max-height: 2000px;
+  }
+
+  .film-btn {
+    appearance: none;
+    -webkit-appearance: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    background-color: #fff;
+    color: #000;
+    border: 2px solid #000;
+    padding: 0.6rem 1.15rem;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 3px 3px 0 #000;
+    transition:
+      transform 250ms ease,
+      box-shadow 250ms ease,
+      background-color 250ms ease;
+    cursor: pointer;
+  }
+
+  .film-btn:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 #000;
+    background-color: #a5e6ff;
+  }
+
+  .stills-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .stills-title {
+    font-size: 1.75rem;
+    margin: 0;
+    font-weight: 800;
+  }
+
+  .stills-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .film-still-img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    background-color: #000;
+    border: 4px solid #000;
+    box-shadow: 8px 8px 0 #000;
+    display: block;
+  }
+
+  /* Autolink styling needs to be global because it is rendered with set:html */
+  :global(.film-desc-link) {
+    color: #3b82f6;
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  :global(.film-desc-link:hover) {
+    text-decoration: underline;
+  }
+</style>
+
+<script>
+  const btn = document.getElementById("show-more-btn");
+  const desc = document.getElementById("desc-text");
+
+  if (btn && desc) {
+    btn.addEventListener("click", () => {
+      const isExpanded = desc.classList.toggle("expanded");
+      setTimeout(() => {
+        btn.textContent = isExpanded ? "Show Less" : "Show More";
+      }, 250);
+    });
+  }
+</script>

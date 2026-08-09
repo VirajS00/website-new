@@ -37,3 +37,149 @@ body {
   padding: 0;
   font-family: "Martian Mono", monospace;
 }
+
+button {
+  font-family: inherit;
+}
+
+.select-container {
+  position: relative;
+  width: fit-content;
+}
+
+/* Rotates the chevron when the popover is open */
+.select-container:has(:popover-open)::after {
+  rotate: -135deg;
+  translate: 0 -25%; /* Adjusts the visual center slightly when flipped */
+}
+
+/* Neobrutalist Chevron Arrow */
+.select-container::after {
+  content: "";
+  position: absolute;
+  right: 1.25rem;
+  height: 10px;
+  width: 10px;
+  background-color: transparent;
+  border-bottom: 3px solid #000;
+  border-right: 3px solid #000;
+  top: 45%;
+  translate: 0 -50%;
+  rotate: 45deg;
+  pointer-events: none;
+  transition:
+    rotate 150ms ease,
+    translate 150ms ease;
+}
+
+@supports (appearance: base-select) {
+  .custom-select,
+  .custom-select::picker(select) {
+    appearance: base-select;
+  }
+}
+
+@supports not (appearance: base-select) {
+  .custom-select {
+    appearance: none;
+  }
+}
+
+.custom-select {
+  border-radius: 0;
+  min-width: 300px;
+  padding-block: 0.75rem;
+  padding-inline: 1rem;
+  border: 3px solid #000;
+  background-color: #fff4db;
+  font-family: inherit;
+  font-size: 0.875rem;
+  color: #000;
+  font-weight: bold;
+  box-shadow: 5px 5px 0px 0px #000;
+  transition:
+    box-shadow 100ms ease,
+    translate 100ms ease;
+}
+
+.custom-select:hover {
+  background-color: #fff4db;
+}
+
+/* Neobrutalist Dropdown Popover */
+.custom-select::picker(select) {
+  margin-block-start: 0.5rem;
+  border-radius: 0;
+  padding-block: 0;
+  transform-origin: top left;
+  border: 3px solid #000;
+  background-color: #fff4db;
+  box-shadow: 5px 5px 0px 0px #000;
+
+  opacity: 0;
+  scale: 0.9;
+
+  transition:
+    scale 150ms ease,
+    opacity 150ms ease,
+    overlay 100ms allow-discrete,
+    display 100ms allow-discrete;
+}
+
+.custom-select::picker(select):popover-open {
+  opacity: 1;
+  scale: 1;
+}
+
+@starting-style {
+  .custom-select::picker(select):popover-open {
+    opacity: 0;
+    scale: 0.9;
+  }
+}
+
+.custom-select::picker-icon {
+  content: "";
+  display: none;
+}
+
+/* Dropdown Options */
+.custom-select option {
+  padding-block: 0.75rem;
+  padding-inline: 1rem;
+  font-family: monospace;
+  font-size: 0.875rem;
+  font-weight: bold;
+  color: #000;
+  border-bottom: 2px solid #000;
+}
+
+.custom-select option:last-child {
+  border-bottom: none;
+}
+
+.custom-select option:not(:checked):hover {
+  background-color: #fff8a6;
+  color: #000;
+}
+
+.custom-select option::checkmark {
+  position: absolute;
+  right: 1rem;
+}
+
+/* High contrast selected color */
+option:checked {
+  background-color: #fef052;
+  color: #000;
+}
+
+option:checked::checkmark {
+  color: #000;
+}
+
+@media (max-width: 640px) {
+  .select-container {
+    width: 100%;
+  }
+}

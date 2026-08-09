@@ -1,0 +1,50 @@
+---
+type Props = {
+  href: string;
+  color?: "red" | "green" | "blue";
+};
+
+const { href, color = "red" }: Props = Astro.props;
+---
+
+<a
+  href={href}
+  class:list={[
+    { red: color === "red", green: color === "green", blue: color === "blue" },
+  ]}
+>
+  <slot />
+</a>
+
+<style>
+  a {
+    text-decoration: none;
+    color: #000;
+    display: inline-block;
+    width: fit-content;
+    border: 2px solid #000;
+    padding-inline: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    box-shadow: 3px 3px 0 #000;
+    height: 2.25rem;
+    font-size: 0.875rem;
+
+    &:hover {
+      translate: 3px 3px;
+      box-shadow: none;
+    }
+  }
+
+  .red {
+    background-color: #ffa5a7;
+  }
+  .green {
+    background-color: #c6ff86;
+  }
+  .blue {
+    background-color: #a5e6ff;
+  }
+</style>
