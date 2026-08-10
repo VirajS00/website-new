@@ -1,0 +1,167 @@
+---
+import Layout from "../../../components/Layout/Layout.astro";
+---
+
+<Layout
+  title="Viraj's Website | Photography"
+  description="Viraj Shukla's photography portfolio and gear"
+>
+  <main class="photos-page">
+    <h1 class="page-title">PHOTOGRAPHY</h1>
+
+    <details>
+      <summary>SEE MY GEAR & SOFTWARE</summary>
+      <div>
+        <div>
+          <div>Camera Body:</div>
+          <div>Canon EOS 80D</div>
+        </div>
+        <div>
+          <div>Key Glass:</div>
+          <div>
+            Sigma EF 17-50mm F2.8 EX DC OS HSM, Canon EF-S 55-250mm f/4-5.6 IS
+            STM, Canon EF 100-400mm f/4.5-5.6L IS II USM
+          </div>
+        </div>
+        <div>
+          <div>Macro Setup:</div>
+          <div>
+            Extension Tube set, Old Pentax 28-80mm f/3.5-4.5 K Mount Lens
+            Reverse Mounted, Custom Flash Diffuser + on-camera Flash
+          </div>
+        </div>
+        <div>
+          <div>Focus Areas:</div>
+          <div>Macro, Birds & Wildlife</div>
+        </div>
+        <div>
+          <div>Photo Editing Software:</div>
+          <div>DxO Photolab 9.6, RawTherapee, Topaz Photo AI, Affinity</div>
+        </div>
+      </div>
+    </details>
+  </main>
+</Layout>
+
+<style>
+  :root {
+    interpolate-size: allow-keywords;
+  }
+
+  .photos-page {
+    padding-top: 3rem;
+    padding-bottom: 5rem;
+  }
+
+  .page-title {
+    font-size: clamp(3rem, 8vw, 5rem);
+    margin-block-end: 2rem;
+    margin-block-start: 0;
+    text-shadow: 6px 6px 0px #cccccc;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  details {
+    background-color: #fff6e1;
+    border: 3px solid #000;
+    border-block-end: 0;
+    box-shadow: 8px 8px 0 #000;
+    font-family: inherit;
+    transition:
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+    interpolate-size: allow-keywords;
+  }
+
+  details[open] {
+    border-block-end: 3px solid #000;
+  }
+
+  details::details-content {
+    opacity: 0;
+    block-size: 0;
+    overflow: hidden;
+    transition:
+      content-visibility 0.3s allow-discrete,
+      opacity 0.3s ease,
+      block-size 0.3s ease;
+  }
+
+  details[open]::details-content {
+    opacity: 1;
+    block-size: auto;
+  }
+
+  @starting-style {
+    details[open]::details-content {
+      opacity: 0;
+      block-size: 0;
+    }
+  }
+
+  summary {
+    background-color: #f5ff69;
+    font-weight: 800;
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid #000;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary::after {
+    content: "";
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-right: 2px solid #000;
+    border-bottom: 2px solid #000;
+    transform: rotate(45deg);
+    transition: transform 0.2s ease;
+    margin-top: -5px;
+  }
+
+  details[open] summary::after {
+    transform: rotate(-135deg);
+    margin-top: 5px;
+  }
+
+  details > div {
+    display: flex;
+    flex-direction: column;
+  }
+
+  details > div > div {
+    display: flex;
+    padding: 1rem 1.5rem;
+    border-bottom: 2px solid #000;
+    gap: 0.5rem;
+  }
+
+  details > div > div:last-child {
+    border-bottom: none;
+  }
+
+  details > div > div > div:first-child {
+    font-weight: 800;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 600px) {
+    details > div > div {
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    details > div > div > div:first-child {
+      white-space: normal;
+    }
+  }
+</style>
