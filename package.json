@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "astro": "^7.2.0",
-    "autolinker": "^4.1.5"
+    "autolinker": "^4.1.5",
+    "exifr": "^7.1.3"
   }
 }

@@ -1,5 +1,32 @@
 ---
 import Layout from "../../../components/Layout/Layout.astro";
+import metadata from "../../../../public/photos/metadata.json";
+import { undefined } from "astro:schema";
+
+// Group photos by year
+type Photo = (typeof metadata)[0];
+const photosByYear = metadata.reduce<Record<number, Photo[]>>((acc, photo) => {
+  const year = photo.year;
+  if (!acc[year]) acc[year] = [];
+  acc[year].push(photo);
+  return acc;
+}, {});
+
+// Sort years descending
+const years = Object.keys(photosByYear).sort((a, b) => Number(b) - Number(a));
+const sortedPhotos = years.flatMap((year) => photosByYear[Number(year)]);
+
+// Vibrant colors for year tags
+const colors = [
+  "#ff6b6b",
+  "#4ecdc4",
+  "#ffe66d",
+  "#c7f464",
+  "#ff9f43",
+  "#54a0ff",
+  "#5bf59b",
+  "#ff4757",
+];
 ---
 
 <Layout
@@ -40,6 +67,150 @@ import Layout from "../../../components/Layout/Layout.astro";
         </div>
       </div>
     </details>
+
+    <div class="neo-gallery">
+      {
+        years.map((year, yearIndex) => {
+          const color = colors[yearIndex % colors.length];
+          return (
+            <div class="gallery-year-group">
+              <div class="year-marker">
+                <h2 class="year-title" style={`background-color: ${color};`}>
+                  {year}
+                </h2>
+              </div>
+
+              <div class="gallery-grid">
+                {photosByYear[Number(year)].map((photo) => {
+                  const globalIndex = sortedPhotos.indexOf(photo);
+                  const lightboxId = `lightbox-${globalIndex}`;
+                  const prevId =
+                    globalIndex > 0 ? `lightbox-${globalIndex - 1}` : null;
+                  const nextId =
+                    globalIndex < sortedPhotos.length - 1
+                      ? `lightbox-${globalIndex + 1}`
+                      : null;
+                  return (
+                    <div class="thumbnail-wrapper">
+                      <button
+                        class="thumbnail-btn"
+                        popovertarget={lightboxId}
+                        aria-label={`View photo from ${year}`}
+                      >
+                        <img
+                          src={photo.path}
+                          alt={photo.file}
+                          loading="lazy"
+                          width={photo.width}
+                          height={photo.height}
+                        />
+                      </button>
+
+                      <div
+                        id={lightboxId}
+                        class="lightbox-popover"
+                        popover="manual"
+                        tabindex="-1"
+                      >
+                        <div class="lightbox-content">
+                          <button
+                            class="close-btn"
+                            popovertarget={lightboxId}
+                            popovertargetaction="hide"
+                            aria-label="Close"
+                          >
+                            X CLOSE
+                          </button>
+                          <img
+                            src={photo.path}
+                            alt={photo.file}
+                            loading="lazy"
+                            width={photo.width}
+                            height={photo.height}
+                            style={`aspect-ratio: ${photo.width} / ${photo.height}; max-width: min(100%, calc(70vh * ${photo.width / photo.height})); background-color: #f0f0f0;`}
+                          />
+                          {(photo.make ||
+                            photo.focalLength ||
+                            photo.fNumber ||
+                            photo.flash ||
+                            photo.year ||
+                            photo.software ||
+                            photo.model ||
+                            photo.lensModel ||
+                            photo.reedited) && (
+                            <div class="photo-meta">
+                              {photo.model && (
+                                <span class="meta-camera">{photo.model}</span>
+                              )}
+                              {photo.lensModel && (
+                                <span class="meta-lens">{photo.lensModel}</span>
+                              )}
+                              {photo.focalLength && (
+                                <span>{photo.focalLength}mm</span>
+                              )}
+                              {photo.fNumber && <span>f/{photo.fNumber}</span>}
+                              {photo.exposureTime && (
+                                <span>
+                                  1/{Math.round(1 / photo.exposureTime)}s
+                                </span>
+                              )}
+                              {photo.iso && <span>ISO {photo.iso}</span>}
+                              {photo.flash &&
+                                photo.flash.includes("Flash fired") && (
+                                  <span>Flash Fired ⚡️</span>
+                                )}
+                              {photo.software && (
+                                <span class="meta-software">
+                                  {Array.isArray(photo.software)
+                                    ? photo.software.join(" + ")
+                                    : photo.software}
+                                </span>
+                              )}
+                              {photo.year && (
+                                <span class="meta-year">{photo.year}</span>
+                              )}
+                              {typeof photo.reedited === "number" && (
+                                <span class="meta-reedited">
+                                  Re-edited {photo.reedited}
+                                </span>
+                              )}
+                            </div>
+                          )}
+                          <div class="lightbox-nav">
+                            {prevId ? (
+                              <button
+                                class="nav-btn prev-btn"
+                                data-target={prevId}
+                                aria-label="Previous Photo"
+                              >
+                                &larr;
+                              </button>
+                            ) : (
+                              <div />
+                            )}
+                            {nextId ? (
+                              <button
+                                class="nav-btn next-btn"
+                                data-target={nextId}
+                                aria-label="Next Photo"
+                              >
+                                &rarr;
+                              </button>
+                            ) : (
+                              <div />
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })
+      }
+    </div>
   </main>
 </Layout>
 
@@ -62,6 +233,7 @@ import Layout from "../../../components/Layout/Layout.astro";
     text-transform: uppercase;
   }
 
+  /* Gear Details Section */
   details {
     background-color: #fff6e1;
     border: 3px solid #000;
@@ -72,6 +244,7 @@ import Layout from "../../../components/Layout/Layout.astro";
       box-shadow 0.2s ease,
       transform 0.2s ease;
     interpolate-size: allow-keywords;
+    margin-bottom: 4rem;
   }
 
   details[open] {
@@ -164,4 +337,345 @@ import Layout from "../../../components/Layout/Layout.astro";
       white-space: normal;
     }
   }
+
+  /* Neo-Gallery Styles */
+  .neo-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+    margin-top: 4rem;
+  }
+
+  .gallery-year-group {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .year-marker {
+    display: flex;
+    align-items: center;
+  }
+
+  .year-title {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 900;
+    margin: 0;
+    padding: 0.5rem 2rem;
+    border: 4px solid #000;
+    box-shadow: 8px 8px 0 #000;
+    transform: rotate(-2deg);
+    display: inline-block;
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    padding: 1rem;
+  }
+
+  .thumbnail-wrapper {
+    display: block;
+    width: 100%;
+    height: 350px;
+    aspect-ratio: 4/3;
+
+    & button {
+      height: 100%;
+    }
+
+    & img {
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  .thumbnail-btn {
+    width: 100%;
+    background: #fff;
+    border: 4px solid #000;
+    box-shadow: 8px 8px 0 #000;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+    display: block;
+  }
+
+  .thumbnail-btn:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 12px 12px 0 #000;
+    outline: none;
+  }
+
+  .thumbnail-btn:focus-visible {
+    transform: translate(-4px, -4px);
+    box-shadow: 12px 12px 0 #000;
+    outline: 6px solid #4ecdc4;
+    outline-offset: 4px;
+  }
+
+  .thumbnail-btn img {
+    width: 100%;
+    aspect-ratio: 1; /* Square thumbnails */
+    object-fit: cover;
+    border: 2px solid #000;
+    display: block;
+  }
+
+  .lightbox-popover {
+    border: 4px solid #000;
+    box-shadow: 16px 16px 0 #000;
+    background: #fff;
+    padding: 1.5rem;
+    max-width: 95vw;
+    max-height: 95vh;
+    margin: auto;
+    overflow: visible;
+  }
+
+  .lightbox-popover::backdrop {
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
+    pointer-events: auto;
+  }
+
+  .lightbox-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    position: relative;
+  }
+
+  .close-btn {
+    align-self: flex-end;
+    background: #ff4757;
+    color: #000;
+    border: 3px solid #000;
+    box-shadow: 4px 4px 0 #000;
+    padding: 0.5rem 1rem;
+    font-weight: 900;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: transform 0.1s ease;
+  }
+
+  .close-btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 #000;
+    outline: none;
+  }
+
+  .close-btn:focus-visible {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 #000;
+    outline: 6px solid #4ecdc4;
+    outline-offset: 4px;
+  }
+
+  .lightbox-content img {
+    width: 100%;
+    height: auto;
+    max-height: 70vh;
+    border: 4px solid #000;
+    object-fit: contain;
+    margin: 0 auto;
+    display: block;
+  }
+
+  .photo-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    font-family:
+      ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #000;
+  }
+
+  .photo-meta span {
+    background: #fff6e1;
+    padding: 0.4rem 0.8rem;
+    border: 2px solid #000;
+    box-shadow: 4px 4px 0 #000;
+  }
+
+  .photo-meta span.meta-software {
+    background: #a29bfe;
+  }
+
+  .photo-meta span.meta-reedited {
+    background: #c7f464;
+    color: #000;
+  }
+
+  .photo-meta span.meta-camera {
+    background: #fdcb6e;
+    color: #000;
+  }
+
+  .photo-meta span.meta-lens {
+    background: #4ecdc4;
+    color: #000;
+  }
+
+  .photo-meta span.meta-year {
+    background: #ff9ff3;
+    color: #000;
+  }
+
+  .lightbox-nav {
+    position: absolute;
+    top: 50%;
+    left: -3rem;
+    right: -3rem;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .nav-btn {
+    pointer-events: auto;
+    background: #f5ff69;
+    color: #000;
+    border: 4px solid #000;
+    box-shadow: 6px 6px 0 #000;
+    width: 4rem;
+    height: 4rem;
+    min-width: 4rem;
+    max-width: 4rem;
+    min-height: 4rem;
+    max-height: 4rem;
+    aspect-ratio: 1;
+    padding: 0;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-weight: 900;
+    font-size: 1.8rem;
+    cursor: pointer;
+    transition: all 0.1s ease;
+    overflow: hidden;
+  }
+
+  .nav-btn:hover {
+    transform: translate(-2px, -2px) scale(1.1);
+    box-shadow: 8px 8px 0 #000;
+    background: #4ecdc4;
+    outline: none;
+  }
+
+  .nav-btn:active {
+    transform: translate(2px, 2px) scale(0.95);
+    box-shadow: 2px 2px 0 #000;
+  }
+
+  .nav-btn:focus-visible {
+    transform: translate(-2px, -2px) scale(1.1);
+    box-shadow: 8px 8px 0 #000;
+    outline: 6px solid #ff4757;
+    outline-offset: 4px;
+  }
 </style>
+
+<script>
+  // Secure light-dismiss for manual popovers
+  document.addEventListener(
+    "click",
+    (e) => {
+      // Find the currently open popover
+      const openPopover = document.querySelector(
+        ".lightbox-popover:popover-open",
+      ) as HTMLDivElement | null;
+
+      if (openPopover) {
+        // The actual visible box is .lightbox-content.
+        // If you click the ::backdrop, the target is .lightbox-popover itself.
+        const content = openPopover.querySelector(".lightbox-content");
+        if (content && !content.contains(e.target as HTMLElement)) {
+          // Stop the click from passing through!
+          e.preventDefault();
+          e.stopPropagation();
+          openPopover.hidePopover();
+        }
+      }
+    },
+    { capture: true },
+  );
+
+  // Handle click on nav buttons
+  document.addEventListener("click", (e) => {
+    const navBtn = (e.target as HTMLElement).closest(".nav-btn");
+    if (!navBtn) return;
+
+    const targetId = (navBtn as any).dataset.target;
+    if (!targetId) return;
+
+    const currentPopover = navBtn.closest(".lightbox-popover");
+    const targetPopover = document.getElementById(targetId);
+
+    if (currentPopover && targetPopover) {
+      (currentPopover as HTMLDivElement).hidePopover();
+      targetPopover.showPopover();
+    }
+  });
+
+  // Handle keyboard arrows
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      const openPopover = document.querySelector(".lightbox-popover:popover-open");
+      if (openPopover) {
+        (openPopover as HTMLDivElement).hidePopover();
+      }
+      return;
+    }
+
+    if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+
+    // Find open popover (using a safe query for cross-browser)
+    const openPopover = Array.from(
+      document.querySelectorAll(".lightbox-popover"),
+    ).find((p) => p.matches(":popover-open"));
+    if (!openPopover) return;
+
+    let targetBtn;
+    if (e.key === "ArrowLeft") {
+      targetBtn = openPopover.querySelector(".prev-btn");
+    } else if (e.key === "ArrowRight") {
+      targetBtn = openPopover.querySelector(".next-btn");
+    }
+
+    if (targetBtn && (targetBtn as any).dataset.target) {
+      const targetPopover = document.getElementById(
+        (targetBtn as any).dataset.target,
+      );
+      if (targetPopover) {
+        (openPopover as HTMLDivElement).hidePopover();
+        targetPopover.showPopover();
+      }
+    }
+  });
+
+  // Manage focus when popovers open and close
+  document.addEventListener("toggle", (e) => {
+    const target = e.target as HTMLElement;
+    if (target.classList.contains("lightbox-popover")) {
+      if ((e as any).newState === "open") {
+        // Focus the popover so keyboard events work immediately
+        target.focus();
+      } else if ((e as any).newState === "closed") {
+        // When closing, focus the thumbnail of the photo we were JUST looking at
+        const btn = document.querySelector(`[popovertarget="${target.id}"]`) as HTMLElement;
+        if (btn) btn.focus();
+      }
+    }
+  }, { capture: true });
+</script>
