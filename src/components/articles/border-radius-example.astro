@@ -1,0 +1,239 @@
+---
+
+---
+
+<div class="border-radius-example neobrutalist-container">
+  <div class="border-radius-container">
+    <div class="border-radius-box"></div>
+  </div>
+
+  <div class="controls-container">
+    <input
+      type="range"
+      class="range-input"
+      id="range-solid-gradient"
+      min="10"
+      max="100"
+      step="5"
+      value="10"
+    />
+    <label for="range-solid-gradient" class="hidden-label"
+      >Border Radius value</label
+    >
+
+    <div class="controls-bottom">
+      <p class="value-display">
+        Border Radius: <span class="val-text">10</span><span class="unit-text"
+          >px</span
+        >
+      </p>
+
+      <div class="buttons-container">
+        <div>
+          <input
+            type="radio"
+            name="unit"
+            id="pixel"
+            value="px"
+            checked
+            class="hide-input"
+          />
+          <label for="pixel" class="radio-label">px</label>
+        </div>
+        <div>
+          <input
+            type="radio"
+            name="unit"
+            id="percent"
+            value="percent"
+            class="hide-input"
+          />
+          <label for="percent" class="radio-label">%</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Setup interactivity for all instances of the component
+  const containers = document.querySelectorAll(".border-radius-example");
+
+  containers.forEach((container) => {
+    const rangeInput = container.querySelector(
+      ".range-input",
+    ) as HTMLInputElement | null;
+    const box = container.querySelector(
+      ".border-radius-box",
+    ) as HTMLDivElement | null;
+    const valText = container.querySelector(
+      ".val-text",
+    ) as HTMLDivElement | null;
+    const unitText = container.querySelector(
+      ".unit-text",
+    ) as HTMLSpanElement | null;
+    const unitRadios = container.querySelectorAll(
+      ".hide-input",
+    ) as NodeListOf<HTMLInputElement>;
+
+    let currentUnit = "px";
+    let currentValue = "10";
+
+    function updateStyles() {
+      const displayUnit = currentUnit === "px" ? "px" : "%";
+      if (box && valText && unitText) {
+        box.style.borderRadius = `${currentValue}${displayUnit} 0`;
+        valText.textContent = currentValue;
+        unitText.textContent = displayUnit;
+      }
+    }
+
+    if (rangeInput) {
+      rangeInput.addEventListener("input", (e) => {
+        currentValue = (e?.target as HTMLInputElement)?.value;
+        updateStyles();
+      });
+    }
+
+    unitRadios.forEach((radio) => {
+      radio.addEventListener("change", (e) => {
+        if ((e.currentTarget as HTMLInputElement).checked) {
+          currentUnit = (e.currentTarget as HTMLInputElement).value;
+          updateStyles();
+        }
+      });
+    });
+
+    updateStyles();
+  });
+</script>
+
+<style>
+  .neobrutalist-container {
+    border: 3px solid #000;
+    box-shadow: 6px 6px 0px 0px #000;
+    background-color: #fff4db;
+    padding: 2rem;
+    margin-block: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 500px;
+  }
+
+  .border-radius-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem 0;
+    border: 2px dashed #000;
+    background-color: #fff;
+  }
+
+  .border-radius-box {
+    width: 150px;
+    height: 150px;
+    background-color: #fef052;
+    border: 3px solid #000;
+    box-shadow: 5px 5px 0px 0px #000;
+    transition: border-radius 150ms ease;
+  }
+
+  .controls-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .range-input {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 8px;
+    background: #000;
+    outline: none;
+    border-radius: 0;
+  }
+  
+  .range-input:focus-visible {
+    outline: 3px dashed #000;
+    outline-offset: 4px;
+  }
+
+  .range-input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    background: #fef052;
+    border: 3px solid #000;
+    cursor: pointer;
+  }
+
+  .range-input::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    background: #fef052;
+    border: 3px solid #000;
+    cursor: pointer;
+    border-radius: 0;
+  }
+
+  .hidden-label {
+    display: none;
+  }
+
+  .controls-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .value-display {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin: 0;
+    color: #000;
+  }
+
+  .buttons-container {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .hide-input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .hide-input:focus-visible + .radio-label {
+    outline: 3px dashed #000;
+    outline-offset: 4px;
+  }
+
+  .radio-label {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    border: 2px solid #000;
+    background-color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 4px 4px 0px 0px #000;
+    transition: all 150ms ease;
+  }
+
+  .hide-input:checked + .radio-label {
+    background-color: #fef052;
+    translate: 4px 4px;
+    box-shadow: 0px 0px 0px 0px #000;
+  }
+
+  .radio-label:hover:not(.hide-input:checked + .radio-label) {
+    background-color: #fff8a6;
+  }
+</style>

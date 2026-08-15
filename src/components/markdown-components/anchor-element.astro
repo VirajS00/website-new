@@ -1,0 +1,26 @@
+---
+const props = Astro.props;
+---
+
+<a
+  {...props}
+  target="_blank"
+  rel="noopener noreferrer"
+  class="neobrutalist-link"
+>
+  <slot />
+</a>
+
+<style>
+  .neobrutalist-link {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-thickness: 0.1em;
+    font-weight: 700;
+    text-shadow: 0.08em 0.08em 0px rgb(0 0 0 / 0.25);
+    transition: all 150ms ease;
+  }
+  .neobrutalist-link:hover {
+    text-shadow: 0.1em 0.1em 0px rgb(0 0 0 / 0.25);
+  }
+</style>

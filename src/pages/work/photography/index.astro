@@ -225,17 +225,17 @@ const colors = [
   }
 
   .page-title {
-    font-size: clamp(3rem, 8vw, 5rem);
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    text-shadow: 0.05em 0.05em 0 rgb(0 0 0 / 0.25);
     margin-block-end: 2rem;
     margin-block-start: 0;
-    text-shadow: 6px 6px 0px #cccccc;
-    letter-spacing: 0.05em;
+    letter-spacing: -0.02em;
     text-transform: uppercase;
   }
 
   /* Gear Details Section */
   details {
-    background-color: #fff6e1;
+    background-color: #fffaef;
     border: 3px solid #000;
     border-block-end: 0;
     box-shadow: 8px 8px 0 #000;
@@ -631,7 +631,9 @@ const colors = [
   // Handle keyboard arrows
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
-      const openPopover = document.querySelector(".lightbox-popover:popover-open");
+      const openPopover = document.querySelector(
+        ".lightbox-popover:popover-open",
+      );
       if (openPopover) {
         (openPopover as HTMLDivElement).hidePopover();
       }
@@ -665,17 +667,23 @@ const colors = [
   });
 
   // Manage focus when popovers open and close
-  document.addEventListener("toggle", (e) => {
-    const target = e.target as HTMLElement;
-    if (target.classList.contains("lightbox-popover")) {
-      if ((e as any).newState === "open") {
-        // Focus the popover so keyboard events work immediately
-        target.focus();
-      } else if ((e as any).newState === "closed") {
-        // When closing, focus the thumbnail of the photo we were JUST looking at
-        const btn = document.querySelector(`[popovertarget="${target.id}"]`) as HTMLElement;
-        if (btn) btn.focus();
+  document.addEventListener(
+    "toggle",
+    (e) => {
+      const target = e.target as HTMLElement;
+      if (target.classList.contains("lightbox-popover")) {
+        if ((e as any).newState === "open") {
+          // Focus the popover so keyboard events work immediately
+          target.focus();
+        } else if ((e as any).newState === "closed") {
+          // When closing, focus the thumbnail of the photo we were JUST looking at
+          const btn = document.querySelector(
+            `[popovertarget="${target.id}"]`,
+          ) as HTMLElement;
+          if (btn) btn.focus();
+        }
       }
-    }
-  }, { capture: true });
+    },
+    { capture: true },
+  );
 </script>

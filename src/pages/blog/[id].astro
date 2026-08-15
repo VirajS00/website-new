@@ -1,0 +1,176 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../../components/Layout/Layout.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  return posts.map((post) => ({
+    params: { id: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<Layout
+  title={`Viraj's Website | ${post.data.title}`}
+  description={post.data.short_description}
+>
+  <article class="blog-post-container">
+    <header class="post-header">
+      <div class="tags-container">
+        {post.data.tags.map((tag) => <span class="tag-pill">{tag}</span>)}
+      </div>
+      <h1 class="post-title">{post.data.title}</h1>
+
+      {
+        post.data.image && (
+          <div class="hero-image-container">
+            <img
+              src={`/blog/${post.data.image}`}
+              alt={post.data.title}
+              class="hero-image"
+            />
+          </div>
+        )
+      }
+    </header>
+
+    <div class="post-content neobrutalist-prose">
+      <Content />
+    </div>
+  </article>
+</Layout>
+
+<style>
+  .blog-post-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding-block: 4rem;
+    font-family: "Martian Mono", monospace;
+  }
+
+  .post-header {
+    margin-bottom: 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tag-pill {
+    background-color: #fef052;
+    border: 2px solid #000;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    box-shadow: 3px 3px 0px 0px #000;
+  }
+
+  .post-title {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    text-shadow: 0.05em 0.05em 0 rgb(0 0 0 / 0.25);
+    margin: 0;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    font-weight: 800;
+    color: #000;
+  }
+
+  .hero-image-container {
+    margin-top: 2rem;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background-color: #b3d8e5;
+    border: 4px solid #000;
+    box-shadow: 8px 8px 0px 0px #000;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* 
+   * Neobrutalist Prose styling for markdown content 
+   */
+  .post-content {
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: #000;
+  }
+
+  .post-content :global(p) {
+    margin-bottom: 1.5rem;
+  }
+
+  .post-content :global(h1),
+  .post-content :global(h2),
+  .post-content :global(h3),
+  .post-content :global(h4) {
+    font-weight: 800;
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+  }
+
+  .post-content :global(h2) {
+    font-size: 2.5rem;
+    text-shadow: 3px 3px 0px #fef052;
+  }
+
+  .post-content :global(h3) {
+    font-size: 2rem;
+    border-bottom: 3px solid #000;
+    display: inline-block;
+    padding-bottom: 0.25rem;
+  }
+
+  .post-content :global(ul),
+  .post-content :global(ol) {
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+  }
+
+  .post-content :global(li) {
+    margin-bottom: 0.5rem;
+  }
+
+  /* Astro/MDX Code Blocks styling */
+  .post-content :global(pre) {
+    padding: 1.5rem;
+    border: 3px solid #000;
+    box-shadow: 6px 6px 0px 0px #000;
+    margin-block: 2.5rem;
+    overflow-x: auto;
+    background-color: #1a1a1a !important; /* Force dark background */
+    border-radius: 0;
+  }
+
+  .post-content :global(code) {
+    font-family: "Martian Mono", monospace;
+    font-size: 0.95rem;
+  }
+
+  .post-content :global(p > code),
+  .post-content :global(li > code) {
+    background-color: #fff8a6;
+    border: 2px solid #000;
+    padding: 0.1em 0.3em;
+    font-weight: bold;
+    color: #000;
+    box-shadow: 2px 2px 0px 0px #000;
+  }
+</style>

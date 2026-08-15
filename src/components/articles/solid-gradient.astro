@@ -1,0 +1,169 @@
+---
+
+---
+
+<div class="solid-gradient-example neobrutalist-container">
+  <div class="gradient-display-container">
+    <div class="gradient-box"></div>
+  </div>
+
+  <div class="controls-container">
+    <input
+      type="range"
+      class="range-input"
+      id="range-solid-gradient"
+      min="20"
+      max="60"
+      step="10"
+      value="60"
+    />
+    <label for="range-solid-gradient" class="hidden-label"
+      >Blue gradient percentage</label
+    >
+
+    <div class="controls-bottom">
+      <p class="value-display">
+        Gradient Blue Percentage: <span class="val-text">60</span>%
+      </p>
+      <p class="value-display static-display">
+        Gradient White Start Percent: 60%
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+  const containers = document.querySelectorAll(".solid-gradient-example");
+
+  containers.forEach((container) => {
+    const rangeInput = container.querySelector(
+      ".range-input",
+    ) as HTMLInputElement | null;
+    const box = container.querySelector(
+      ".gradient-box",
+    ) as HTMLDivElement | null;
+    const valText = container.querySelector(
+      ".val-text",
+    ) as HTMLSpanElement | null;
+
+    function updateStyles() {
+      if (rangeInput && box && valText) {
+        const currentValue = rangeInput.value;
+        box.style.setProperty("--gradient-percentage", `${currentValue}%`);
+        valText.textContent = currentValue;
+      }
+    }
+
+    if (rangeInput) {
+      rangeInput.addEventListener("input", updateStyles);
+    }
+
+    // Initialize
+    updateStyles();
+  });
+</script>
+
+<style>
+  .neobrutalist-container {
+    border: 3px solid #000;
+    box-shadow: 6px 6px 0px 0px #000;
+    background-color: #fff4db;
+    padding: 2rem;
+    margin-block: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 500px;
+    font-family: "Martian Mono", monospace;
+  }
+
+  .gradient-display-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem 1.5rem;
+    border: 2px dashed #000;
+    background-color: #fff;
+  }
+
+  .gradient-box {
+    --gradient-percentage: 60%;
+    width: 100%;
+    height: 120px;
+    border: 3px solid #000;
+    box-shadow: 5px 5px 0px 0px #000;
+    background: linear-gradient(
+      to right,
+      #0055ff var(--gradient-percentage),
+      #ffffff 60%
+    );
+  }
+
+  .controls-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .range-input {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 8px;
+    background: #000;
+    outline: none;
+    border-radius: 0;
+  }
+  
+  .range-input:focus-visible {
+    outline: 3px dashed #000;
+    outline-offset: 4px;
+  }
+
+  .range-input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    background: #0055ff;
+    border: 3px solid #000;
+    cursor: pointer;
+  }
+
+  .range-input::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    background: #0055ff;
+    border: 3px solid #000;
+    cursor: pointer;
+    border-radius: 0;
+  }
+
+  .hidden-label {
+    display: none;
+  }
+
+  .controls-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .value-display {
+    font-size: 0.95rem;
+    font-weight: bold;
+    margin: 0;
+    color: #000;
+    background-color: #fef052;
+    padding: 0.5rem 1rem;
+    border: 2px solid #000;
+    box-shadow: 3px 3px 0px 0px #000;
+    text-transform: uppercase;
+  }
+
+  .static-display {
+    background-color: #ffffff;
+  }
+</style>

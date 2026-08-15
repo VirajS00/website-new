@@ -1,0 +1,132 @@
+---
+import Layout from "../../components/Layout/Layout.astro";
+import { getCollection } from "astro:content";
+
+const posts = await getCollection("blog");
+---
+
+<Layout
+  title="Viraj's Website | Blog"
+  description="Read my latest thoughts and updates"
+>
+  <div class="blog-container">
+    <h1 class="page-title">My Blog</h1>
+    <div class="posts-grid">
+      {
+        posts.map((post) => (
+          <a href={`/blog/${post.id}`} class="post-card">
+            <div class="card-image-container">
+              <img
+                src={`/blog/${post.data.thumbnail}`}
+                alt={post.data.title}
+                class="card-image"
+              />
+            </div>
+            <div class="card-content">
+              <h2 class="post-title">{post.data.title}</h2>
+              <p class="post-desc">{post.data.short_description}</p>
+              <div class="tags-container">
+                {post.data.tags.map((tag) => (
+                  <span class="tag-pill">{tag}</span>
+                ))}
+              </div>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .blog-container {
+    padding-block: 4rem;
+  }
+
+  .page-title {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    text-shadow: 0.05em 0.05em 0 rgb(0 0 0 / 0.25);
+    margin-block-end: 2rem;
+    margin-block-start: 0;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+  }
+
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(375px, 1fr));
+    gap: 3rem;
+  }
+
+  .post-card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    background-color: #fff4db;
+    border: 3px solid #000;
+    box-shadow: 8px 8px 0px 0px #000;
+    transition: all 150ms ease;
+    height: 100%;
+  }
+
+  .post-card:hover {
+    translate: 4px 4px;
+    box-shadow: 4px 4px 0px 0px #000;
+  }
+
+  .card-image-container {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-bottom: 3px solid #000;
+    overflow: hidden;
+    background-color: #fef052;
+  }
+
+  .card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: scale 300ms ease;
+  }
+
+  .card-content {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .post-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0 0 1rem 0;
+    line-height: 1.2;
+    color: #000;
+  }
+
+  .post-desc {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 0 0 1.5rem 0;
+    flex-grow: 1;
+    font-weight: 500;
+    color: #333;
+  }
+
+  .tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tag-pill {
+    background-color: #fef052;
+    border: 2px solid #000;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    box-shadow: 2px 2px 0px 0px #000;
+  }
+</style>

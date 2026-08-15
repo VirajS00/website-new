@@ -1,0 +1,43 @@
+---
+const props = Astro.props;
+---
+<blockquote {...props} class="neobrutalist-blockquote">
+  <slot />
+</blockquote>
+
+<style>
+  .neobrutalist-blockquote {
+    position: relative;
+    border: 3px solid #000;
+    background-color: #fff4db;
+    padding: 1.5rem 1.5rem 1.5rem 2.5rem;
+    margin-block: 2rem;
+    box-shadow: 6px 6px 0px 0px #000;
+    font-weight: 500;
+    color: #000;
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+  
+  .neobrutalist-blockquote::before {
+    content: "”";
+    position: absolute;
+    top: -1rem;
+    left: -1rem;
+    font-size: 4rem;
+    line-height: 1;
+    color: #fef052;
+    text-shadow: 3px 3px 0px #000;
+    font-family: serif;
+    font-weight: bold;
+    z-index: 1;
+  }
+  
+  .neobrutalist-blockquote :global(> *:first-child) {
+    margin-top: 0;
+  }
+  
+  .neobrutalist-blockquote :global(> *:last-child) {
+    margin-bottom: 0;
+  }
+</style>

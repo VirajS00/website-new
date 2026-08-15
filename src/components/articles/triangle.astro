@@ -1,0 +1,164 @@
+---
+
+---
+
+<div class="triangle-example neobrutalist-container">
+  <div class="triangle-display-container">
+    <div class="triangles-box"></div>
+  </div>
+
+  <div class="controls-container">
+    <input
+      type="range"
+      class="range-input"
+      id="range-triangle"
+      min="5"
+      max="80"
+      step="5"
+      value="80"
+    />
+    <label for="range-triangle" class="hidden-label">Border Thickness</label>
+
+    <div class="controls-bottom">
+      <p class="value-display">
+        Border Thickness: <span class="val-text">80</span>px
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+  const containers = document.querySelectorAll(
+    ".triangle-example",
+  ) as NodeListOf<HTMLDivElement>;
+
+  containers.forEach((container) => {
+    const rangeInput = container.querySelector(
+      ".range-input",
+    ) as HTMLInputElement | null;
+    const box = container.querySelector(
+      ".triangles-box",
+    ) as HTMLDivElement | null;
+    const valText = container.querySelector(
+      ".val-text",
+    ) as HTMLSpanElement | null;
+
+    function updateStyles() {
+      if (rangeInput && box && valText) {
+        const currentValue = rangeInput.value;
+        box.style.setProperty("--border-width", `${currentValue}px`);
+        valText.textContent = currentValue;
+      }
+    }
+
+    if (rangeInput) {
+      rangeInput.addEventListener("input", updateStyles);
+    }
+
+    // Initialize
+    updateStyles();
+  });
+</script>
+
+<style>
+  .neobrutalist-container {
+    border: 3px solid #000;
+    box-shadow: 6px 6px 0px 0px #000;
+    background-color: #fff4db;
+    padding: 2rem;
+    margin-block: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 500px;
+    font-family: "Martian Mono", monospace;
+  }
+
+  .triangle-display-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem 1.5rem;
+    border: 2px dashed #000;
+    background-color: #fff;
+    min-height: 280px;
+  }
+
+  .triangles-box {
+    --border-width: 80px;
+    width: 160px;
+    height: 160px;
+    box-sizing: border-box;
+    /* Creating the CSS triangles by using thick borders on a fixed element */
+    border-top: var(--border-width) solid #ff2255;    /* Red */
+    border-right: var(--border-width) solid #22c55e;  /* Green */
+    border-bottom: var(--border-width) solid #fef052; /* Yellow */
+    border-left: var(--border-width) solid #0055ff;   /* Blue */
+    /* Add a nice drop shadow to the whole shape */
+    box-shadow: 5px 5px 0px 0px rgba(0,0,0,0.2);
+    transition: border-width 100ms ease;
+  }
+
+  .controls-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .range-input {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 8px;
+    background: #000;
+    outline: none;
+    border-radius: 0;
+  }
+
+  .range-input:focus-visible {
+    outline: 3px dashed #000;
+    outline-offset: 4px;
+  }
+
+  .range-input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    background: #ff2255;
+    border: 3px solid #000;
+    cursor: pointer;
+  }
+
+  .range-input::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    background: #ff2255;
+    border: 3px solid #000;
+    cursor: pointer;
+    border-radius: 0;
+  }
+
+  .hidden-label {
+    display: none;
+  }
+
+  .controls-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .value-display {
+    font-size: 0.95rem;
+    font-weight: bold;
+    margin: 0;
+    color: #fff;
+    background-color: #000;
+    padding: 0.5rem 1rem;
+    border: 2px solid #000;
+    box-shadow: 3px 3px 0px 0px #ff2255;
+    text-transform: uppercase;
+  }
+</style>
