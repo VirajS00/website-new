@@ -1,0 +1,191 @@
+---
+interface Props {
+  beforeImage: string;
+  afterImage: string;
+  alt?: string;
+  caption?: string;
+}
+
+const { beforeImage, afterImage, alt = "Image diff", caption } = Astro.props;
+---
+
+<div class="image-diff-example neobrutalist-container">
+  <div class="diff-container">
+    <img src={afterImage} alt={`After ${alt}`} class="after-image" />
+    <img src={beforeImage} alt={`Before ${alt}`} class="before-image" />
+    <div class="line">
+      <button class="handle" aria-label="Drag to compare images">↔</button>
+    </div>
+  </div>
+  {caption && <p class="diff-caption">{caption}</p>}
+</div>
+
+<script>
+  // Setup interactivity for all instances of the component
+  const containers = document.querySelectorAll(".image-diff-example");
+
+  containers.forEach((container) => {
+    const diffContainer = container.querySelector(
+      ".diff-container",
+    ) as HTMLDivElement | null;
+    const beforeImage = container.querySelector(
+      ".before-image",
+    ) as HTMLImageElement | null;
+    const sliderLine = container.querySelector(
+      ".line",
+    ) as HTMLDivElement | null;
+    let isDragging = false;
+
+    function updateSlider(percentage: number) {
+      if (beforeImage && sliderLine) {
+        beforeImage.style.clipPath = `polygon(0 0, ${percentage}% 0, ${percentage}% 100%, 0% 100%)`;
+        sliderLine.style.left = `${percentage}%`;
+      }
+    }
+
+    // Initialize the slider at 50%
+    updateSlider(50);
+
+    function processMove(e: Event) {
+      if (!isDragging || !diffContainer) return;
+      const rect = diffContainer.getBoundingClientRect();
+      const touchEvent = e as TouchEvent;
+      const mouseEvent = e as MouseEvent;
+      const clientX = touchEvent.touches
+        ? touchEvent.touches[0].clientX
+        : mouseEvent.clientX;
+
+      let x = clientX - rect.left;
+      let percentage = (x / rect.width) * 100;
+      if (percentage < 0) percentage = 0;
+      if (percentage > 100) percentage = 100;
+      updateSlider(percentage);
+    }
+
+    if (sliderLine) {
+      sliderLine.addEventListener("mousedown", () => (isDragging = true));
+    }
+
+    window.addEventListener("touchstart", (e: Event) => {
+      const target = e.target as HTMLElement;
+      if (target && target.closest(".line")) isDragging = true;
+    });
+
+    window.addEventListener("mouseup", () => (isDragging = false));
+    window.addEventListener("touchend", () => (isDragging = false));
+
+    window.addEventListener("mousemove", processMove);
+    window.addEventListener("touchmove", processMove, { passive: false });
+
+    if (diffContainer) {
+      diffContainer.addEventListener("dblclick", () => {
+        updateSlider(50);
+      });
+    }
+  });
+</script>
+
+<style>
+  .neobrutalist-container {
+    border: 3px solid #000;
+    box-shadow: 6px 6px 0px 0px #000;
+    background-color: #fff4db;
+    padding: 2rem;
+    margin-block: 2.5rem;
+    width: 100%;
+    margin-inline: auto;
+  }
+
+  .diff-container {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    position: relative;
+    overflow: hidden;
+    border: 3px solid #000;
+    box-shadow: 4px 4px 0px 0px #000;
+  }
+
+  .diff-container > img {
+    height: 100%;
+    width: 100%;
+    grid-column: 1;
+    grid-row: 1;
+    object-fit: cover;
+    user-select: none;
+    pointer-events: none;
+    
+    /* Reset any global leaked styles */
+    margin: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  .before-image {
+    z-index: 1;
+  }
+
+  .after-image {
+    z-index: 0;
+  }
+
+  .line {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    height: 100%;
+    width: 40px;
+    transform: translateX(-50%);
+    cursor: ew-resize;
+    z-index: 10;
+  }
+
+  .line::before {
+    content: "";
+    position: absolute;
+    width: 4px;
+    height: 100%;
+    background-color: #fef052;
+    border-inline: 2px solid #000;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .handle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 40px;
+    width: 40px;
+    background-color: #fff;
+    display: grid;
+    place-items: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: 3px solid #000;
+    border-radius: 50%;
+    cursor: grab;
+    color: #000;
+  }
+
+  .handle:active {
+    cursor: grabbing;
+  }
+
+  .handle:focus-visible {
+    outline: 3px dashed #000;
+    outline-offset: 4px;
+  }
+
+  .diff-caption {
+    font-size: 1rem;
+    font-weight: 700;
+    text-align: center;
+    margin: 0 !important;
+    margin-block-start: 1.75rem !important;
+    color: #000;
+  }
+</style>

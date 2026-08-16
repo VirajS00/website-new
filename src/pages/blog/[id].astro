@@ -112,9 +112,13 @@ const { Content } = await render(post);
     color: #000;
   }
 
-  .post-content :global(img) {
+  .post-content :global(p > img) {
     width: 100%;
     height: auto;
+    border: 3px solid #000;
+    box-shadow: 6px 6px 0px 0px #000;
+    margin-block: 2.5rem;
+    display: block;
   }
 
   .post-content :global(p) {
