@@ -112,6 +112,11 @@ const { Content } = await render(post);
     color: #000;
   }
 
+  .post-content :global(img) {
+    width: 100%;
+    height: auto;
+  }
+
   .post-content :global(p) {
     margin-bottom: 1.5rem;
   }
@@ -128,7 +133,7 @@ const { Content } = await render(post);
 
   .post-content :global(h2) {
     font-size: 2.5rem;
-    text-shadow: 3px 3px 0px #fef052;
+    text-shadow: 0.05em 0.05em 0 rgb(0 0 0 / 0.25);
   }
 
   .post-content :global(h3) {
