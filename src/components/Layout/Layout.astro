@@ -19,6 +19,9 @@ const { title, description } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
+    
+    <!-- Load experimental CSS completely outside the Vite pipeline -->
+    <link rel="stylesheet" href="/experimental.css" />
   </head>
   <body>
     <Nav />

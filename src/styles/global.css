@@ -126,17 +126,6 @@ button {
     display 100ms allow-discrete;
 }
 
-.custom-select::picker(select):popover-open {
-  opacity: 1;
-  scale: 1;
-}
-
-@starting-style {
-  .custom-select::picker(select):popover-open {
-    opacity: 0;
-    scale: 0.9;
-  }
-}
 
 .custom-select::picker-icon {
   content: "";

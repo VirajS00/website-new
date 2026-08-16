@@ -1,0 +1,18 @@
+/* 
+  Experimental CSS for base-select API.
+  This file is kept in /public to completely bypass Vite/LightningCSS processing,
+  since LightningCSS strictly rejects state pseudo-classes after pseudo-elements 
+  (e.g., ::picker(select):popover-open).
+*/
+
+.custom-select::picker(select):popover-open {
+  opacity: 1;
+  scale: 1;
+}
+
+@starting-style {
+  .custom-select::picker(select):popover-open {
+    opacity: 0;
+    scale: 0.9;
+  }
+}
